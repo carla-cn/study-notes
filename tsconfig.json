@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es2017",
+    "jsx": "react",
+    "module": "esnext",
+    "allowJs": false,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "removeComments": true,
+    "strictNullChecks": false,
+    "noUnusedLocals": true,
+    "outDir": ".ts.out",
+    "lib": ["scripthost", "es2015", "es2016", "es2017", "dom", "dom.iterable"],
+    "typeRoots": ["node_modules/@types", "./typings", "./@types"],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["./docs/**/*"],
+  "files": ["./.dumirc.ts"]
+}
