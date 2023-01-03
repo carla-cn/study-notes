@@ -1,6 +1,7 @@
 ---
 title: 字符串的扩展
 toc: content
+order: 4
 ---
 
 ## 四、字符串的扩展

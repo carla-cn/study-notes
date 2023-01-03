@@ -1,6 +1,7 @@
 ---
 title: let 和 const 命令
 toc: content
+order: 2
 ---
 
 ## 二、let 和 const 命令

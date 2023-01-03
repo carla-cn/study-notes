@@ -4,5 +4,5 @@ hero:
   description:
   actions:
     - text: GitHub
-      link: /
+      link: https://github.com/carla-cn/study-notes
 ---
