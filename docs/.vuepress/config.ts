@@ -36,6 +36,7 @@ export default defineUserConfig({
 	alias: {
 		'@': path.resolve(__dirname, '../'),
 	},
+	base: '/study-notes/',
 	theme: defaultTheme({
 		logo: '/favicon.ico',
 		repo: 'https://github.com/carla-cn/study-notes',
