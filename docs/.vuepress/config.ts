@@ -10,7 +10,7 @@ const Navbar = [
 				children: [
 					{
 						text: '红宝书',
-						link: '/frontend/javascript/red-book',
+						link: '/frontend/js/red-book',
 					},
 				],
 			},
@@ -49,10 +49,6 @@ export default defineUserConfig({
 		repo: 'https://github.com/carla-cn/study-notes',
 		docsDir: 'docs',
 		navbar: Navbar,
-		sidebar: {
-			'/frontend/': [Navbar[0]],
-			'/general/': [Navbar[1]],
-		},
 		editLink: false,
 		contributors: false,
 		backToHome: '返回首页',
