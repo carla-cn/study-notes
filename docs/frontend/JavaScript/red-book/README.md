@@ -1,6 +1,6 @@
 ## 什么是 JavaScript
 
-::: tip
+:::tip
 
 1. JavaScript 由那三部分组成？
 
