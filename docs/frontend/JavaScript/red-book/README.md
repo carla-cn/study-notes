@@ -1,0 +1,52 @@
+## 什么是 JavaScript
+
+::: tip
+
+1. JavaScript 由那三部分组成？
+
+- ECMAScript：ECMAScript 是 JavaScript 的核心规范，定义了语法、类型、语句、关键字、保留字、操作符、全局对象
+- DOM：提供与网页内容交互的方法和接口，它将网页表示为一个由节点组成的树状结构
+- BOM：提供与浏览器交互的方法和接口
+
+2. JavaScript 和 ECMAScript 有什么关系？
+   ECMAScript 是 JavaScript 的标准化规范，JavaScript 是 ECMAScript 的一个实现
+
+:::
+
+### 历史
+
+- 1995 年问世（网景与 Sun 公司开发），目的是让客户端处理输入验证
+- 1997 年，为解决像 Netscape Navigator(JavaScript) 和 IE(JScript) 中存在多个版本 JavaScript 的问题，JavaScript1.1 作为提案被提交给欧洲计算机制造商协会 Ecma，由 TC39 打造出 ECMA-262，也就是 ECMAScript 脚本语言标准
+- 1998 年，国际标准化组织 ISO 和国际电工委员会 IEC 也将 ECMAScript 采纳为标准，自此各家浏览器均以 ECMAScript 作为 JavaScript 实现的依据，但具体实现各有不同
+
+### JavaScript 实现
+
+JavaScript 不限于 ECMA-262 所定义的那样，它包含以下几个部分：
+
+- 核心（ECMAScript）：由 ECMA-262 定义并提供核心功能
+- 文档对象模型（DOM）：提供与网页内容交互的方法和接口
+- 浏览器对象模型（BOM）：提供与浏览器交互的方法和接口
+
+#### ECMAScript
+
+ECMA-262 定义了什么？
+
+- 语法
+- 类型
+- 语句
+- 关键字
+- 保留字
+- 操作符
+- 全局对象
+
+ECMAScript 是实现 ECMA-262 这个规范描述的所有方面的一门语言，JavaScript 和 Adobe ActionScript 都实现了 ECMAScript
+
+> Web 浏览器是 ECMAScript 的一种宿主环境，宿主环境提供 ECMAScript 的基准实现和与环境自身交互必需的扩展，扩展（如 DOM）使用 ECMAScript 的核心类型和语法提供特定于环境的额外功能
+
+#### DOM
+
+文档对象模型（Document Object Model）是一个应用编程接口（API），DOM 通过创建表示文档的树，让开发者可以控制网页的结构和内容，使用 DOM API 可以轻松删除、添加、替换、修改节点
+
+#### BOM
+
+浏览器对象模型 BOM,用于支持访问和操作浏览器的窗口

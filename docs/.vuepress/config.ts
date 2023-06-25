@@ -1,12 +1,19 @@
 import { path } from '@vuepress/utils'
-
-import { defineUserConfig } from 'vuepress'
-import { defaultTheme } from 'vuepress'
+import { defineUserConfig, defaultTheme } from 'vuepress'
 
 const Navbar = [
 	{
 		text: '前端',
 		children: [
+			{
+				text: 'JavaScript',
+				children: [
+					{
+						text: '红宝书',
+						link: '/frontend/javascript/red-book',
+					},
+				],
+			},
 			{
 				text: 'React',
 				children: [
