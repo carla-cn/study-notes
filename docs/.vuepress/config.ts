@@ -44,10 +44,16 @@ export default defineUserConfig({
 		'@': path.resolve(__dirname, '../'),
 	},
 	base: '/study-notes/',
+	markdown: {
+		headers: {
+			level: [2, 3, 4, 5],
+		},
+	},
 	theme: defaultTheme({
 		logo: '/favicon.ico',
 		repo: 'https://github.com/carla-cn/study-notes',
 		docsDir: 'docs',
+		sidebarDepth: 4,
 		navbar: Navbar,
 		editLink: false,
 		contributors: false,
