@@ -23,6 +23,15 @@ const Navbar = [
 					},
 				],
 			},
+			{
+				text: '其他',
+				children: [
+					{
+						text: '小工具',
+						link: '/frontend/other/tools',
+					},
+				],
+			},
 		],
 	},
 	{
