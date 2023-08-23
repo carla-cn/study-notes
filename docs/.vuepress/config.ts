@@ -15,11 +15,11 @@ const Navbar = [
 				],
 			},
 			{
-				text: 'React',
+				text: '框架',
 				children: [
 					{
-						text: 'React 源码',
-						link: '/frontend/react/react-code',
+						text: '小程序',
+						link: '/frontend/framework/we_app',
 					},
 				],
 			},
@@ -31,6 +31,15 @@ const Navbar = [
 						link: '/frontend/other/tools',
 					},
 				],
+			},
+		],
+	},
+	{
+		text: '后端',
+		children: [
+			{
+				text: 'Go',
+				link: '/backend/go',
 			},
 		],
 	},
