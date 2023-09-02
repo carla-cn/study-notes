@@ -30,6 +30,10 @@ const Navbar = [
 						text: '小工具',
 						link: '/frontend/other/tools',
 					},
+					{
+						text: '错误收集',
+						link: '/frontend/other/errors',
+					},
 				],
 			},
 		],
