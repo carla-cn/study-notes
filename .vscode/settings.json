@@ -1,3 +1,13 @@
 {
-	"cSpell.words": ["Atoi", "imgs", "Println", "strconv", "vuepress"]
+	"cSpell.words": [
+		"Atoi",
+		"clong",
+		"imgs",
+		"Println",
+		"Sincos",
+		"strconv",
+		"struct",
+		"Trunc",
+		"vuepress"
+	]
 }

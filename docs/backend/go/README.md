@@ -749,3 +749,725 @@ func() {
 因为函数字面值需要保留外部作用域的变量引用，所以函数字面值都是闭包的
 
 闭包就是由于匿名函数封闭并包围作用域中的变量而得名
+
+### 数组
+
+数组是一种固定长度且有序的元素集合
+
+```go
+var colors [3]string
+colors[0] = "Red"
+colors[1] = "Green"
+
+color := colors[1]
+fmt.Println(color) // Green
+fmt.Println(colors[2] == "") // true
+fmt.Println(len(colors)) // 3
+```
+
+> 数组的长度可以由内置函数 len 确定
+>
+> 在声明数组时，未被赋值元素的值是对应类型的零值
+
+#### 数组越界
+
+```go
+var colors [3]string
+colors[3] = "Red"
+i := 3
+fmt.Println(colors[i]) // panic: runtime error: index out of range
+```
+
+> Go 编译器在检测到对越界元素的访问时会报错
+>
+> 如果 Go 编译器在编译时未能发现越界错误，那么程序在运行时会出现 Panic
+>
+> Panic 会导致程序崩溃
+
+#### 使用复合字面值初始化数组
+
+复合字面值（composite literal）是一种用于初始化复合类型（数组、切片、字典和结构体）的紧凑语法
+
+只用一步就完成数组声明和数组初始化
+
+```go
+colors := [3]string{"Red", "Green", "Blue"}
+```
+
+可以在复合字面值里使用 ... 作为数组的长度，这样 Go 编译器会自动算出数组的元素数量
+
+```go
+colors := [...]string{"Red", "Green", "Blue"}
+```
+
+> 无论哪种方式，数组的长度都是固定的
+
+#### 遍历数组
+
+for 循环
+
+```go
+dwarfs := [5]string{"Ceres", "Pluto", "Haumea", "Makemake", "Eris"}
+for i := 0; i < len(dwarfs); i++ {
+  fmt.Println(i, dwarfs[i])
+}
+```
+
+range 关键字
+
+```go
+dwarfs := [5]string{"Ceres", "Pluto", "Haumea", "Makemake", "Eris"}
+for i, dwarf := range dwarfs {
+  fmt.Println(i, dwarf)
+}
+```
+
+#### 数组的复制
+
+无论数组赋值给新的变量还是将它传递给函数，都会产生一个完整的数组副本
+
+```go
+planets := [...]string{"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"}
+
+planetsMarkII := planets
+planets[2] = "whoops"
+fmt.Println(planets) // [Mercury Venus whoops Mars Jupiter Saturn Uranus Neptune]
+fmt.Println(planetsMarkII) // [Mercury Venus Earth Mars Jupiter Saturn Uranus Neptune]
+fmt.Println(planets == planetsMarkII) // false
+```
+
+> 数组也是一种值，函数通过值传递来接受参数，所以数组作为函数的参数就非常低效
+>
+> 数组的长度也是数组类型的一部分，将长度不符的数组作为参数传递会报错
+>
+> 函数一般使用 slice 而不是数组作为参数
+
+#### 数组的数组
+
+二维数组
+
+```go
+var board [8][8]string
+
+board[0][0] = "r"
+board[0][7] = "r"
+
+for column := range board[1] {
+  board[1][column] = "p"
+}
+
+fmt.Println(board)
+```
+
+### 切片 Slice
+
+#### Slice 指向数组的窗口
+
+假设 planets 是一个数组，那么 planets[0:4] 就是一个切片，它指向 planets 数组的前 4 个元素
+
+切分数组不会导致数组被修改，它只是创建了指向数组的一个窗口或视图，这种视图就是 slice 类型
+
+```go
+planets := [...]string{"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"}
+
+// terrestrial := planets[0:4]
+terrestrial := planets[:4]
+gasGiants := planets[4:6]
+// iceGiants := planets[6:8]
+iceGiants := planets[6:]
+
+allPlanets := planets[:]
+
+fmt.Println(terrestrial) // [Mercury Venus Earth Mars]
+fmt.Println(gasGiants) // [Jupiter Saturn]
+fmt.Println(iceGiants) // [Uranus Neptune]
+fmt.Println(allPlanets) // [Mercury Venus Earth Mars Jupiter Saturn Uranus Neptune]
+```
+
+> 忽略掉 slice 的起始索引，表示从数组的起始位置进行切分
+>
+> 忽略掉 slice 的结束索引，相当于使用数组的长度作为结束索引
+>
+> 注意：slice 的索引不能是负数
+
+切分数组的语法也可以用于切分字符串
+
+```go
+s := "hello, world"
+c := s[0:5]
+s = "1111111"
+fmt.Println((c)) // hello
+```
+
+切分字符串时，索引代表的时字节数而非 rune 数
+
+```go
+question := "¿Cómo estás?"
+fmt.Println(question[:6]) // ¿Cómo
+```
+
+#### Slice 的复合字面值
+
+切分数组并不是创建 slice 的唯一方法，可以直接声明 slice
+
+```go
+dwarfArray := [...]string{"Ceres", "Pluto", "Haumea", "Makemake", "Eris"}
+dwarfs := dwarfArray[:]
+
+// 直接声明 slice，不需要指定长度
+dwarfs := []string{"Ceres", "Pluto", "Haumea", "Makemake", "Eris"}
+```
+
+切片应用
+
+```go
+func hyperspace(worlds []string) {
+  for i := range worlds {
+    worlds[i] = strings.TrimSpace(worlds[i])
+  }
+}
+
+func main() {
+  planets := []string{" Venus  ", "Earth ", " Mars"}
+  hyperspace(planets)
+  fmt.Println(strings.Join(planets, "")) // VenusEarthMars
+}
+```
+
+#### 带有方法的切片
+
+在 Go 里，可以将 slice 或数组作为底层类型，然后绑定其它方法
+
+```go
+planets := []string{"Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"}
+
+sort.StringSlice(planets).Sort()
+fmt.Println(planets) // [Earth Jupiter Mars Neptune Saturn Uranus Venus]
+```
+
+#### 更大的 slice
+
+append 函数也是内置函数，它用于向 slice 里追加元素
+
+```go
+dwarfs := []string{"Ceres", "Pluto", "Haumea", "Makemake", "Eris"}
+dwarfs = append(dwarfs, "Orcus")
+fmt.Println(dwarfs) // [Ceres Pluto Haumea Makemake Eris Orcus]
+```
+
+#### 长度和容量（length & capacity）
+
+Slice 中元素的个数决定了 slice 的长度
+
+如果 slice 的底层数组比 slice 还大，那么就说 slice 还有容量可供增长
+
+```go
+func dump(label string, slice []string) {
+  fmt.Printf("%v: length %v, capacity %v %v\n", label, len(slice), cap(slice), slice)
+}
+
+func main() {
+  dwarfs := []string{"Ceres", "Pluto", "Haumea", "Makemake", "Eris"}
+  dump("dwarfs", dwarfs) // dwarfs: length 5, capacity 5 [Ceres Pluto Haumea Makemake Eris]
+  dump("dwarfs[1:2]", dwarfs[1:2]) // dwarfs[1:2]: length 1, capacity 4 [Pluto]
+}
+```
+
+再结合 append 函数看一看
+
+```go
+func dump(label string, slice []string) {
+  fmt.Printf("%v: length %v, capacity %v %v\n", label, len(slice), cap(slice), slice)
+}
+
+func main() {
+  dwarfs1 := []string{"Ceres", "Pluto", "Haumea", "Makemake", "Eris"}
+  dwarfs2 := append(dwarfs1, "Orcus")
+  dwarfs3 := append(dwarfs2, "Salacia", "Quaoar", "Sedna")
+
+  dump("dwarfs1", dwarfs1) // dwarfs1: length 5, capacity 5 [Ceres Pluto Haumea Makemake Eris]
+  dump("dwarfs2", dwarfs2) // dwarfs2: length 6, capacity 10 [Ceres Pluto Haumea Makemake Eris Orcus]
+  dump("dwarfs3", dwarfs3) // dwarfs3: length 9, capacity 10 [Ceres Pluto Haumea Makemake Eris Orcus Salacia Quaoar Sedna]
+
+  dwarfs3[1] = "Pluto!"
+  fmt.Println(dwarfs1) // [Ceres Pluto Haumea Makemake Eris]
+	/* 下面两个切片的底层数组是相同的 */
+  fmt.Println(dwarfs2) // [Ceres Pluto! Haumea Makemake Eris Orcus]
+  fmt.Println(dwarfs3) // [Ceres Pluto! Haumea Makemake Eris Orcus Salacia Quaoar Sedna]
+}
+```
+
+#### 三个索引的切分操作
+
+Go 1.2 中引入了能够限制新建切片容量的三索引切分操作
+
+```go
+func dump(label string, slice []string) {
+  fmt.Printf("%v: length %v, capacity %v %v\n", label, len(slice), cap(slice), slice)
+}
+
+func main() {
+  planets := []string{"Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"}
+
+  terrestrials := planets[0:4:4] // 又新分配了一个数组，长度为 4，容量为 4
+  worlds := append(terrestrials, "Ceres") // 又新分配了一个数组，长度为 4，容量为 8
+  dump("terrestrials", terrestrials) // terrestrials: length 4, capacity 4 [Mercury Venus Earth Mars]
+  dump("worlds", worlds) // worlds: length 5, capacity 8 [Mercury Venus Earth Mars Ceres]
+
+  worlds2 := append(terrestrials, "Ceres", "Pluto", "Haumea", "Makemake", "Eris")
+  dump("worlds2", worlds2) // worlds2: length 9, capacity 12 [Mercury Venus Earth Mars Ceres Pluto Haumea Makemake Eris]
+}
+```
+
+#### 使用 make 函数对 slice 进行预分配
+
+当 slice 的容量不足以执行 append 操作时，Go 必须创建新数组并复制旧数组中的内容
+
+但通过内置的 make 函数，可以对 slice 进行预分配策略
+
+- 尽量避免额外的内存分配和数组重复操作
+
+```go
+func dump(label string, slice []string) {
+  fmt.Printf("%v: length %v, capacity %v %v\n", label, len(slice), cap(slice), slice)
+}
+
+func main() {
+  dwarfs := make([]string, 0, 10) // 预分配了一个长度为 0，容量为 10 的 slice。如果省略第三个参数，则第二个参数即规定长度也规定容量
+
+  dump("dwarfs", dwarfs) // dwarfs: length 0, capacity 10 []
+
+  dwarfs = append(dwarfs, "Ceres", "Pluto", "Haumea", "Makemake", "Eris")
+
+  dump("dwarfs", dwarfs) // dwarfs: length 5, capacity 10 [Ceres Pluto Haumea Makemake Eris]
+}
+```
+
+#### 声明可变参数的函数
+
+声明 Printf、append 这样的可变参数函数，需要在函数的最后一个参数前面加上 ... 符号
+
+```go
+func terraform(prefix string, worlds ...string) []string {
+  newWorlds := make([]string, len(worlds))
+  for i := range worlds {
+    newWorlds[i] = prefix + " " + worlds[i]
+  }
+  return newWorlds
+}
+
+func main() {
+  twoWorlds := terraform("New", "Venus", "Mars")
+  fmt.Println(twoWorlds) // [New Venus New Mars]
+
+  planets := []string{"Venus", "Mars", "Jupiter"}
+  newPlanets := terraform("New", planets...)
+  fmt.Println(newPlanets) // [New Venus New Mars New Jupiter]
+}
+```
+
+### map
+
+map 是 Go 提供的另外一种集合
+
+- 它可以将 key 映射到 value
+- 它快速通过 key 找到对应的 value
+- 它的 key 几乎可以是任何类型
+
+#### 声明 map
+
+声明 map 必须指定 key 和 value 的类型
+
+```go
+temperature := map[string]int{
+"Earth": 15,
+"Mars": -65,
+}
+
+temp := temperature["Earth"]
+
+fmt.Println("On average the Earth is", temp, "Celsius.")
+
+temperature["Earth"] = 16
+temperature["Venus"] = 464
+
+fmt.Println(temperature) // map[Earth:16 Mars:-65 Venus:464]
+
+moon := temperature["Moon"]
+fmt.Println(moon) // 0
+```
+
+#### , 与 ok 写法
+
+```go
+temperature := map[string]int{
+  "Earth": 15,
+  "Mars": -65,
+}
+
+temp, ok := temperature["Earth"]
+fmt.Println(temp, ok) // 15 true
+
+if moon, ok := temperature["Moon"]; ok {
+  fmt.Println(moon)
+} else {
+  fmt.Println("Where is the Moon?") // Where is the Moon?
+}
+```
+
+#### map 不会复制
+
+数组、int、float64 等类型在赋值给新变量或传递至函数/方法时会创建相应的副本
+
+但 map 不会
+
+```go
+planets := map[string]string{
+  "Earth": "Sector ZZ9",
+  "Mars": "Sector ZZ9",
+}
+
+planetsMarkII := planets
+planets["Earth"] = "whoops"
+
+fmt.Println(planets) // map[Earth:whoops Mars:Sector ZZ9]
+fmt.Println(planetsMarkII) // map[Earth:whoops Mars:Sector ZZ9]
+
+delete(planets, "Earth")
+fmt.Println(planetsMarkII) // map[Mars:Sector ZZ9]
+```
+
+#### 使用 make 函数对 map 进行预分配
+
+除非使用复合字面值来初始化 map，否则必须使用内置的 make 函数来为 map 分配空间
+
+创建 map 时，make 函数可以接收一个或两个参数
+
+- 第一个参数是 map 的类型
+- 第二个参数是可选的，用于指定 map 的初始容量（为指定数量的 key 预先分配空间）
+
+使用 make 函数创建的 map 初始长度是 0
+
+```go
+temperature := make(map[float64]int, 8)
+fmt.Println(len(temperature)) // 0
+```
+
+#### 使用 map 作计数器
+
+```go
+temperature := []float64{
+  -28.0, 32.0, -31.0, -29.0, -23.0, -29.0, -28.0, -33.0,
+}
+
+frequency := make(map[float64]int)
+
+for _, t := range temperature {
+  frequency[t]++
+}
+
+/* range 遍历 map 时是无法保证顺序的 */
+for t, num := range frequency {
+  fmt.Printf("%+.2f occurs %d times\n", t, num)
+}
+```
+
+#### 使用 map 和 slice 实现数据分组
+
+```go
+temperature := []float64{
+  -28.0, 32.0, -31.0, -29.0, -23.0, -29.0, -28.0, -33.0,
+}
+
+groups := make(map[float64][]float64)
+
+for _, t := range temperature {
+  g := math.Trunc(t/10) * 10
+  groups[g] = append(groups[g], t)
+}
+
+for g, temperatures := range groups {
+  fmt.Printf("%v: %v\n", g, temperatures)
+}
+```
+
+#### 将 map 用作 set
+
+Set 这种集合与数组类似，但元素不会重复
+
+Go 语言里没有提供 set 集合
+
+但可以使用 map 来实现 set 集合
+
+```go
+var temperatures = []float64{
+  -28.0, 32.0, -31.0, -29.0, -23.0, -29.0, -28.0, -33.0,
+}
+
+/* 去重 */
+
+set := make(map[float64]bool)
+
+for _, t := range temperatures {
+  set[t] = true
+}
+
+if set[-28.0] {
+  fmt.Println("set member") // set member
+}
+
+fmt.Println(set)
+
+/* 排序 */
+
+unique := make([]float64, 0, len(set))
+
+for t := range set {
+  unique = append(unique, t)
+}
+
+sort.Float64s(unique)
+
+fmt.Println(unique) // [-33 -31 -29 -28 -23 32]
+```
+
+### 结构 struct
+
+为了将分散的零件组成一个完整的结构体，Go 提供了 struct 类型
+
+#### 声明结构
+
+```go
+var curiosity struct {
+  lat float64
+  long float64
+}
+
+curiosity.lat = -4.5895
+curiosity.long = 137.4417
+
+fmt.Println(curiosity.lat, curiosity.long) // -4.5895 137.4417
+fmt.Println(curiosity) // { -4.5895 137.4417}
+```
+
+#### 通过类型复用结构体
+
+```go
+type location struct {
+  lat float64
+  long float64
+}
+
+var spirit location
+spirit.lat = -14.5684
+spirit.long = 175.472636
+
+/* 通过成对的字段和值进行初始化 */
+opportunity := location{lat: -1.9462, long: 354.4734}
+
+/* 按照字段声明的顺序初始化 */
+insight := location{-4.5, 135.9}
+
+fmt.Printf("%v\n", insight) // {-4.5 135.9}
+fmt.Printf("%+v\n", insight) // {lat:-4.5 long:135.9}
+
+fmt.Println(spirit, opportunity) // {-14.5684 175.472636} {-1.9462 354.4734}
+```
+
+#### struct 的复制
+
+```go
+type location struct {
+  lat, long float64
+}
+
+bradbury := location{-4.5895, 137.4417}
+curiosity := bradbury // 两个不同的实例
+
+curiosity.long += 0.0106
+
+fmt.Println(bradbury, curiosity) // {-4.5895 137.4417} {-4.5895 137.4523}
+```
+
+#### 由结构体组成的 slice
+
+```go
+type location struct {
+  lat, long float64
+  name string
+}
+
+lats := []float64{-4.5895, -14.5684, -1.9462}
+longs := []float64{137.4417, 175.472636, 354.4734}
+
+locations := []location{
+  {lat: -4.5895, long: 137.4417, name: "Bradbury Landing"},
+  {lat: -14.5684, long: 175.472636, name: "Columbia Memorial Station"},
+  {lat: -1.9462, long: 354.4734, name: "Challenger Memorial Station"},
+}
+
+fmt.Println(locations) // [{-4.5895 137.4417 Bradbury Landing} {-14.5684 175.472636 Columbia Memorial Station} {-1.9462 354.4734 Challenger Memorial Station}]
+```
+
+#### 将 struct 编码为 JSON
+
+JSON (JavaScript Object Notation，JavaScript 对象表示法)
+
+常用于 Web API
+
+json 包中的 Marshal 函数可以将 struct 编码为 JSON
+
+```go
+type location struct {
+  Lat, Long float64
+  // lat, long float64
+}
+
+func main() {
+  curiosity := location{-4.5895, 137.4417}
+
+  bytes, err := json.Marshal(curiosity)
+  exitOnError(err)
+
+  fmt.Println(string(bytes)) // {"lat":-4.5895,"long":137.4417}
+}
+
+func exitOnError(err error) {
+  if err != nil {
+    fmt.Println(err)
+    os.Exit(1)
+  }
+}
+```
+
+> Marshal 函数只会编码 struct 中被导出的字段（首字母大写）
+
+#### 使用 struct 标签来定义 JSON
+
+Go 语言中 json 包要求 struct 中的字段必须以大写字母开头（类似 CamelCase 大驼峰），但如果需要 snake_case 蛇形命名规范，可以为字段注明标签，使得 json 包在进行编码的时候能够按照标签里的样式修改字段名
+
+```go
+
+type location struct {
+  Lat float64 `json:"latitude"xml:"latitude"`
+  Long float64 `json:"longitude"`
+}
+
+func main() {
+  curiosity := location{-4.5895, 137.4417}
+
+  bytes, err := json.Marshal(curiosity)
+  exitOnError(err)
+
+  fmt.Println(string(bytes)) // {"latitude":-4.5895,"longitude":137.4417}
+}
+
+func exitOnError(err error) {
+  if err != nil {
+    fmt.Println(err)
+    os.Exit(1)
+  }
+}
+```
+
+#### Go语言里没有 class
+
+Go 和其他经典语言不同，它没有 class，没有对象，也没有继承
+
+但是 Go 提供了 struct 和方法
+
+```go
+type coordinate struct {
+  d, m, s float64
+  h rune
+}
+
+func (c coordinate) decimal() float64 {
+  sign := 1.0
+
+  switch c.h {
+  case 'S', 'W', 's', 'w':
+    sign = -1
+  }
+
+  return sign * (c.d + c.m / 60 + c.s / 3600)
+}
+
+func main() {
+  lat := coordinate{4, 35, 22.2, 'S'}
+  long := coordinate{137, 26, 30.12, 'E'}
+  fmt.Println(lat.decimal(), long.decimal()) // -4.5895 137.4417
+}
+```
+
+#### 构造函数
+
+可以使用 struct 复合字面值来初始化想要的数据；但如果 struct 初始化的时候还有做很多事情，那就可以考虑写一个构造用的函数：
+
+```go
+type coordinate struct {
+  d, m, s float64
+  h rune
+}
+
+func (c coordinate) decimal() float64 {
+  sign := 1.0
+
+  switch c.h {
+  case 'S', 'W', 's', 'w':
+    sign = -1
+  }
+
+  return sign * (c.d + c.m / 60 + c.s / 3600)
+}
+
+type location struct {
+  lat, long float64
+}
+
+/* new/New 开头，后面跟一个类型的名称，通常就代表这个类型的构造函数（约定） */
+func newLocation(lat, long coordinate) location {
+  return location{lat.decimal(), long.decimal()}
+}
+
+```
+
+Go 语言没有专门的构造函数，但以 new 或者 New 开头的函数，通常是用来构造数据的
+
+有一些构造函数的名称就是 New（例如 errors 包里面的 New 函数），errors.New()
+
+#### class 的替代方案
+
+Go 语言中没有 class，但是可以使用 struct 和方法来实现类似的功能
+
+```go
+type location struct {
+  lat, long float64
+}
+
+type world struct {
+  radius float64
+}
+
+func rad(deg float64) float64 {
+  return deg * math.Pi / 180
+}
+
+func (w world) distance(p1, p2 location) float64 {
+  s1, c1 := math.Sincos(rad(p1.lat))
+  s2, c2 := math.Sincos(rad(p2.lat))
+  clong := math.Cos(rad(p1.long - p2.long))
+  return w.radius * math.Acos(s1 * s2 + c1 * c2 * clong)
+}
+
+func main() {
+  mars := world{radius: 3389.5}
+  spirit := location{-14.5684, 175.472636}
+  opportunity := location{-1.9462, 354.4734}
+  fmt.Printf("%.2f km\n", mars.distance(spirit, opportunity)) // 9669.71 km
+}
+```
+
+#### 组合与转发
+
+
