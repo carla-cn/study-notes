@@ -1468,6 +1468,187 @@ func main() {
 }
 ```
 
-#### 组合与转发
+#### 组合与转发（composition & forwarding）
 
+Go 通过结构体实现组合
+
+Go 提供了“嵌入”（embedding）特性，它可以实现方法的转发（forwarding）
+
+组合相对于继承更简单、灵活
+
+```go
+// type report struct {
+// 	sol         int
+// 	temperature temperature
+// 	location    location
+// }
+
+type sol int
+
+type report struct {
+	sol
+	temperature
+	location
+}
+
+type temperature struct {
+	high, low celsius
+}
+
+type location struct {
+	lat, long float64
+}
+
+type celsius float64
+
+func (t temperature) average() celsius {
+	return (t.high + t.low) / 2
+}
+
+func (s sol) days(s2 sol) int {
+	days := int(s2 - s)
+	if days < 0 {
+		return -days
+	}
+	return days
+}
+
+// func (r report) average() celsius {
+// 	return r.temperature.average()
+// }
+
+func main() {
+	t := temperature{high: -1.0, low: -78.0}
+	fmt.Printf("%v\n", t.average()) // -39.5
+	loc := location{-4.5895, 137.4417}
+	rep := report{sol: 15, temperature: t, location: loc}
+
+	fmt.Println(rep.temperature.average()) // -39.5
+	fmt.Println(rep.average())             // -39.5
+	fmt.Println(rep.high)                  // -1
+
+	fmt.Println(rep.sol.days(1446)) // 1431
+	fmt.Println(rep.days(1446))     // 1431
+
+	fmt.Printf("%+v\n", rep) // {sol:15 temperature:{high:-1 low:-78} location:{lat:-4.5895 long:137.4417}}
+}
+```
+
+> Go 可以通过 struct 嵌入来实现方法的转发
+>
+> 在 struct 中只给定字段类型，不给定字段名即可
+>
+> 在 struct 中可以转发任意类型
+
+Go 语言中，如果两个字段名字相同，那么在访问的时候就必须使用完整的路径
+
+#### 接口
+
+类型关注于可以做什么，而不是存储了什么
+
+接口通过列举类型必须满足的一组方法来进行声明
+
+在 Go 语言中，不需要显示声明接口
+
+```go
+var t interface {
+  talk() string
+}
+
+type martian struct {}
+
+func (m martian) talk() string {
+  return "nack nack"
+}
+
+type laser int
+
+func (l laser) talk() string {
+  return strings.Repeat("pew ", int(l))
+}
+
+func main() {
+  t = martian{}
+  fmt.Println(t.talk()) // nack nack
+
+  t = laser(3)
+  fmt.Println(t.talk()) // pew pew pew
+}
+```
+
+为了复用，通常会把接口声明为类型
+
+ 按约定，接口名称通常以 er 结尾
+
+```go
+type talker interface {
+  talk() string
+}
+
+type martian struct {}
+
+func (m martian) talk() string {
+  return "nack nack"
+}
+
+type laser int
+
+func (l laser) talk() string {
+  return strings.Repeat("pew ", int(l))
+}
+
+func shout(t talker) {
+  louder := strings.ToUpper(t.talk())
+  fmt.Println(louder)
+}
+
+/* 接口配合 struct 嵌入特性一起使用 */
+type starship struct {
+  laser
+}
+
+func main() {
+   s := starship{laser(3)} 
+
+  shout(martian{}) // NACK NACK
+  shout(laser(2)) // PEW PEW
+  shout(s) // PEW PEW PEW
+}
+```
+
+> 同时使用组合和接口将构成非常强大的设计工具
+
+
+#### 满足接口
+
+Go 语言的接口都是隐式满足的
+
+Go 标准库导出了很多只有单个方法的接口
+
+例如 fmt 包声明的 Stringer 接口
+
+```go
+type Stringer interface {
+  String() string
+}
+```
+
+```go
+type location struct {
+  lat, long float64
+}
+
+func (l location) String() string {
+  return fmt.Sprintf("%v, %v", l.lat, l.long)
+}
+
+func main() {
+  curiosity := location{-4.5895, 137.4417}
+  fmt.Println(curiosity) // -4.5895, 137.4417
+}
+```
+
+标准库中常用的接口还包括：io.Reader、io.Writer、http.Handler、json.Marshaler 等
+
+### 指针
 
