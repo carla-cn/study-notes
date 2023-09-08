@@ -1652,3 +1652,152 @@ func main() {
 
 ### 指针
 
+指针是指向另一个变量地址的变量
+
+Go 语言的指针同时强调安全性，不会出现迷途指针（dangling pointers）
+
+变量会将它们的值存储在计算机 RAM 里，存储位置就是该变量的内存地址
+
+& 表示地址操作符，通过 & 可以获得变量的内存地址
+
+```go
+func main() {
+  answer := 42
+  fmt.Println(&answer) // 0xc0000140a8 类似的一个地址
+}
+```
+
+> & 操作符无法获得字符串/数值/布尔字面值的地址，&42，&"hello" 都会导致编译器报错
+
+\* 操作符与 & 的作用相反，它用来解引用，提供内存地址指向的值
+  
+```go
+answer := 42
+/* Go 语言不允许 address++ 这样的指针运算进行操作 */
+address := &answer
+fmt.Println(*address) // 42
+fmt.Printf("%T\n", address) // *int
+```
+
+> 指针存储的是内存地址
+>
+> **指针类型**和其他普通类型一样，出现在所有需要用到类型的地方，如变量声明、函数形参、返回值类型、结构体字段等
+
+指针类型
+
+```go
+canada := "Canada"
+var home *string
+fmt.Printf("home is a %T\n", home) // home is a *string
+home = &canada
+fmt.Println(*home) // Canada
+```
+
+> 将 \* 放在类型前面，表示声明一个指针类型
+>
+> 将 \* 放在变量前面，表示解引用操作，获取指针指向的值
+
+两个指针变量指向同一个内存地址，那么它们就是相等的
+
+#### 指向结构的指针
+
+与字符串和数值不一样，复合字面量的前面可以放置 &
+
+```go
+type person struct {
+  name, superpower string
+  age int
+}
+
+timmy := &person{
+  name: "Timothy",
+  age: 10,
+}
+
+timmy.superpower = "flying" // 等价于 (*timmy).superpower = "flying"
+
+fmt.Printf("%+v\n", timmy) // &{name:Timothy superpower:flying age:10}
+```
+
+> 访问字段时，对结构体进行解引用并不是必须的
+
+#### 指向数组的指针
+
+和结构体一样，可以把 & 放在数组的复合字面值前面来创建指向数组的指针
+
+```go
+superpowers := &[3]string{"flight", "invisibility", "super strength"}
+
+fmt.Println(superpowers[0]) // flight
+fmt.Println(superpowers[1:2]) // [invisibility]
+```
+
+> 数组在执行索引或切片操作时，会自动解引用，没有必要写 (*superpowers)[0] 这种形式
+>
+> Go 里面数组和指针是两种完全独立的类型
+>
+> slice 和 map 的复合字面值前面也可以放置 & 操作符，但是 Go 并没有为它们提供自动解引用的功能
+
+
+#### 实现修改
+
+Go 语言的函数和方法都是按值传递参数的，这意味着函数总是操作于被传递参数的副本
+
+当指针被传递到函数时，函数将接受传入的内存地址的副本。之后函数可以通过解引用内存地址来修改指针指向的值
+
+```go
+type person struct {
+  name string
+  age int
+}
+
+func birthday(p *person) {
+  p.age++
+}
+
+func main() {
+  timmy := &person{
+    name: "Timothy",
+    age: 10,
+  }
+
+  birthday(timmy)
+  fmt.Printf("%+v\n", timmy) // &{name:Timothy superpower: age:11}
+}
+```
+
+#### 指针接收者
+
+方法的接收者和方法的参数在处理指针方面是很相似的
+
+```go
+type person struct {
+  name string
+  age int
+}
+
+func (p *person) birthday() {
+  p.age++
+}
+
+func main() {
+  timmy := &person{
+    name: "Timothy",
+    age: 10,
+  }
+
+  timmy.birthday()
+  fmt.Printf("%+v\n", timmy) // &{name:Timothy superpower: age:11}
+
+  /* Go 语言在变量通过点标记法进行调用的时候，自动使用 & 取得变量的内存地址 */
+  nathan := person{"Nathan", 18}
+  nathan.birthday() // (&nathan).birthday()
+  fmt.Printf("%+v\n", nathan) // {name:Nathan superpower: age:19}
+}
+```
+
+> 使用指针作为接收者的策略应该始终如一：如果一种类型的某些方法需要用到指针作为接收者，这种类型的所有方法就应该都是用指针作为接收者
+
+#### 内部指针
+
+
