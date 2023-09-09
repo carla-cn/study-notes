@@ -19,6 +19,33 @@
 
 [云效账号密码](https://packages.aliyun.com/npm/npm-registry/guide)
 
+#### 2. `cb() never called!`
+
+使用 `npm i` 安装依赖出现此错误
+
+使用 `rimraf` 可快速删除 `node_modules`
+
+```bash
+npm install -g rimraf
+```
+
+解决：
+
+依次执行如下命令
+
+```bash
+rimraf node_modules
+rimraf package-lock.json
+
+npm cache verify
+npm cache clean --force
+
+npm i
+```
+
+若上述步骤不能解决，则细看究竟是哪个包导致的问题，分批拉依赖
+
+
 ### 编译
 
 #### 1. `“xxxx”不能用作 JSX 组件`
