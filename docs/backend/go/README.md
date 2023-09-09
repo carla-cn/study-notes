@@ -1800,4 +1800,21 @@ func main() {
 
 #### 内部指针
 
+Go 提供了内部指针这种特性，它用于确定结构体中指定字段的内存地址
 
+```go
+type stats struct {
+  level int
+  endurance, health int
+}
+
+func levelUp(s *stats) {
+  s.level++
+  s.endurance = 42 + (14 * s.level)
+  s.health = 5 * s.endurance
+}
+
+type character struct {
+  name string
+  stats stats
+}
