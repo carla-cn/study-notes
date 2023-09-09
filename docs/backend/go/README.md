@@ -1818,3 +1818,10 @@ type character struct {
   name string
   stats stats
 }
+
+func main() {
+  player := character{name: "Matthias"}
+  levelUp(&player.stats)
+  fmt.Printf("%+v\n", player) // {name:Matthias stats:{level:1 endurance:56 health:280}}
+}
+```
