@@ -1821,7 +1821,689 @@ type character struct {
 
 func main() {
   player := character{name: "Matthias"}
-  levelUp(&player.stats)
+  levelUp(&player.stats) // & 操作符不仅可以获得结构体的内存地址，还可以获得结构体中指定字段的内存地址
   fmt.Printf("%+v\n", player) // {name:Matthias stats:{level:1 endurance:56 health:280}}
 }
+```
+
+#### 修改数组
+
+函数通过指针对数组的元素进行修改
+
+```go
+func reset(board *[8][8]rune) {
+  board[0][0] = 'r'
+}
+
+func main() {
+  var board [8][8]rune
+  reset(&board)
+
+  fmt.Printf("%c", board[0][0]) // r
+}
+```
+
+#### 隐式的指针
+
+Go 语言里的一些内置的集合类型就在暗中使用指针
+
+- map 在被赋值或者作为参数传递的时候不会被复制
+  - `func demolish(planets *map[string]string)` 这种写法就是多此一举
+  - map 的键和值都可以是指针类型
+  - 需要将指针指向 map 的情况不多见
+
+- slice 在指向数组元素的时候也使用了指针
+  - 每个 slice 内部都会被表示为一个包含 3 个元素的结构，它们分别指向数组的指针、slice 的长度和 slice 的容量
+  - 当 slice 被直接传递至函数或方法时，slice 的内部指针就可以对底层数据进行修改
+  - 指向 slice 的显示指针的唯一作用就是修改 slice 本身，slice 的长度、容量以及起始偏移量
+
+```go
+func reclassify(planets *[]string) {
+  *planets = (*planets)[0:8]
+}
+
+func main() {
+  planets := []string{
+    "Mercury", "Venus", "Earth", "Mars",
+    "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto",
+  }
+
+  reclassify(&planets)
+  fmt.Println(planets) // [Mercury Venus Earth Mars Jupiter Saturn Uranus Neptune]
+}
+```
+
+#### 指针和接口
+
+```go
+type talker interface {
+  talk() string
+}
+
+func shout(t talker) {
+  fmt.Println(strings.ToUpper(t.talk()))
+}
+
+type martian struct {}
+
+func (m martian) talk() string {
+  return "nack nack"
+}
+
+func main() {
+  /* 无论是 martian 还是指向 martian 的指针，都可以满足 talker 接口 */
+  shout(martian{}) // NACK NACK
+  shout(&martian{}) // NACK NACK
+}
+```
+
+上例中无论是 martian 还是指向 martian 的指针，都可以满足 talker 接口
+
+如果方法使用的是指针接收者，那么情况会有所不同
+
+```go
+type talker interface {
+  talk() string
+}
+
+func shout(t talker) {
+  fmt.Println(strings.ToUpper(t.talk()))
+}
+
+type laser int
+
+func (l *laser) talk() string {
+  return strings.Repeat("pew ", int(*l))
+}
+
+func main() {
+  laser := laser(2)
+  shout(&laser) // PEW PEW
+  shout(laser) // cannot use laser (type laser) as type talker in argument to shout: laser does not implement talker (talk method has pointer receiver)
+}
+```
+
+#### 明智的使用指针
+
+应合理使用指针，不要过度使用
+
+### nil
+
+nil 是一个名词，表示“无”或者“零”
+
+在 Go 里，nil 是一个零值
+
+如果一个指针没有明确的指向，那么它的值就是 nil
+
+除了指针，nil 还是 slice 、map、channel、interface 和函数的零值
+
+Go 语言的 nil 比以往语言的 null 更为友好，并且用的没那么频繁，但是仍需谨慎使用
+
+#### nil 会导致 panic
+
+如果指针没有明确的指向，那么程序将无法对其实施解引用
+
+尝试解引用一个 nil 指针将导致程序崩溃
+
+```go
+var nowhere *int
+fmt.Println(nowhere) // <nil>
+fmt.Println(*nowhere) // panic: runtime error: invalid memory address or nil pointer dereference
+```
+
+#### 避免 nil 引发 panic
+
+```go
+type person struct {
+  age int
+}
+
+func (p *person) birthday() {
+  // 避免 nil 引发 panic
+  if p == nil {
+    return
+  }
+  p.age++
+}
+
+func main() {
+  var nobody *person
+  nobody.birthday()
+}
+```
+> 因为值为 nil 的接收者和值为 nil 的参数在行为上并没有区别，所以 Go 语言即使在接收者为 nil 的情况下，也会继续调用方法
+
+#### nil 函数值
+
+当变量被声明为函数类型时，它的默认值是 nil
+
+```go
+var fn func(a, b int) int
+fmt.Println(fn == nil) // true
+```
+
+检查函数值是否为 nil，并在有需要时提供默认行为
+
+#### nil slice
+
+如果 slice 在声明之后没有使用复合字面值或内置的 make 函数进行初始化，那么它的值就是 nil
+
+幸运的是，range\len\append 等内置函数都可以安全地处理值为 nil 的 slice
+
+```go
+var soup []string
+fmt.Println(soup == nil) // true
+
+for _, ingredient := range soup {
+  fmt.Println(ingredient) // 不会执行
+}
+
+fmt.Println(len(soup)) // 0
+
+soup = append(soup, "onion", "carrot", "celery")
+fmt.Println(soup) // [onion carrot celery]
+```
+
+虽然空 slice 和值为 nil 的 slice 并不相等，但它们通常可以替换使用
+
+#### nil map
+
+和 slice 一样，如果 map 在声明之后没有使用复合字面值或内置的 make 函数进行初始化，那么它的值就是 nil
+
+```go
+var soup map[string]int
+fmt.Println(soup == nil) // true
+
+measurements, ok := soup["onion"]
+if ok {
+  fmt.Println(measurements) // 不会执行
+}
+
+for ingredient, measurement := range soup {
+  fmt.Println(ingredient, measurement) // 不会执行
+}
+```
+
+#### nil 接口
+
+声明为接口类型的变量在未被赋值时，它的零值是 nil
+
+对于一个未被赋值的接口变量来说，它的接口类型和值都是 nil，并且变量本身也等于 nil
+
+```go
+var v interface{}
+fmt.Printf("%T %v %v\n", v, v, v == nil) // <nil> <nil> true
+```
+
+当接口类型的变量被赋值后，接口就会在内部指向该变量的类型和值
+
+```go
+var v interface{}
+fmt.Printf("%T %v %v\n", v, v, v == nil) // <nil> <nil> true
+var p *int
+v = p
+fmt.Printf("%T %v %v\n", v, v, v == nil) // *int <nil> false
+
+// 检验接口变量的内部表示
+fmt.Printf("%#v\n", v) // (*int)(nil)
+```
+
+> 在 Go 中，接口类型的变量只有在类型和值都为 nil 时才等于 nil
+
+#### nil 之外的另一个选择
+
+```go
+type number struct {
+  value int
+  valid bool
+}
+
+func newNumber(v int) number {
+  return number{value: v, valid: true}
+}
+
+func (n number) String() string {
+  if !n.valid {
+    return "未知"
+  }
+  return strconv.Itoa(n.value)
+}
+
+func main() {
+  n := newNumber(42)
+  fmt.Println(n) // 42
+  n = number{}
+  fmt.Println(n) // 未知
+}
+```
+
+### 错误
+
+#### 处理错误
+
+Go 语言允许函数和方法同时返回多个值
+
+按照惯例，函数在返回错误时，最后边的返回值应用来表示错误
+
+调用函数后，应立即检查是否发生错误
+  - 如果没有错误发生，那么返回的错误值为 nil
+
+```go
+files, err := ioutil.ReadDir(".")
+if err != nil {
+  fmt.Println(err)
+  os.Exit(1)
+}
+for _, file := range files {
+  fmt.Println(file.Name())
+}
+```
+
+注意：当错误发生时，函数返回的其他值通常就不再可信
+
+#### 优雅的错误处理
+
+减少错误处理代码的一种策略是：将程序中不会出错的部分和包含潜在错误隐患的部分隔离开来
+
+对于不得不返回错误的代码，应尽力简化相应的错误处理代码
+
+#### 文件写入
+
+写入文件的时候可能出错：
+- 路径不正确
+- 权限不够
+- 磁盘空间不足
+- ...
+
+文件写入完毕后，必须被关闭，确保文件被刷到磁盘上，避免资源的泄露
+
+```go
+// 内置类型 error 用来表示错误
+func proverbs(name string) error {
+  f, err := os.Create(name)
+  if err != nil {
+    return err
+  }
+
+  _, err = fmt.Fprintln(f, "Errors are values.")
+  if err != nil {
+    f.Close()
+    return err
+  }
+
+  _, err = fmt.Fprintln(f, "Don't just check errors, handle them gracefully.")
+  f.Close()
+  return err
+}
+
+func main() {
+  err := proverbs("proverbs.txt")
+  if err != nil {
+    fmt.Println(err)
+    os.Exit(1)
+  }
+}
+```
+
+#### defer 关键字
+
+使用 defer 关键字，Go 可以确保所有 deferred 的动作可以在函数返回前执行
+
+可以 defer 任意的函数和方法
+
+```go
+func proverbs(name string) (err error) {
+  f, err := os.Create(name)
+  if err != nil {
+    return err
+  }
+  defer f.Close()
+
+  _, err = fmt.Fprintln(f, "Errors are values.")
+  if err != nil {
+    return err
+  }
+
+  _, err = fmt.Fprintln(f, "Don't just check errors, handle them gracefully.")
+  return err
+}
+```
+
+defer 并不是专门做错误处理的
+
+defer 可以消除必须时刻惦记执行资源释放的负担
+
+#### 有创意的错误处理
+
+```go
+type safeWriter struct {
+	w   io.Writer
+	err error
+}
+
+func (sw *safeWriter) writeln(s string) {
+	if sw.err != nil {
+		return
+	}
+	_, sw.err = fmt.Fprintln(sw.w, s)
+}
+
+func proverbs(name string) error {
+	f, err := os.Create(name)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	sw := safeWriter{w: f}
+	sw.writeln("Errors are values.")
+	sw.writeln("Don't just check errors, handle them gracefully.")
+	sw.writeln("Don't panic.")
+	sw.writeln("Make the zero value useful.")
+	sw.writeln("The bigger the interface, the weaker the abstraction.")
+	sw.writeln("interface{} says nothing.")
+	sw.writeln("Gofmt's style is no one's favorite, yet gofmt is everyone's favorite.")
+	sw.writeln("Documentation is for users.")
+	sw.writeln("A little copying is better than a little dependency.")
+	sw.writeln("Clear is better than clever.")
+	sw.writeln("Concurrency is not parallelism.")
+	sw.writeln("Don't communicate by sharing memory, share memory by communicating.")
+	sw.writeln("Channels orchestrate; mutexes serialize.")
+
+	return sw.err
+}
+```
+
+#### New error
+
+errors 包里有一个构造用的 New 函数，它接收 string 来作为参数用来表示错误信息，该函数返回 error 类型
+
+```go
+const rows, columns = 9, 9
+
+// Sudoku 数独
+type Grid [rows][columns]int8
+
+// Set
+func (g *Grid) Set(row, column int, digit int8) error {
+  if !inBounds(row, column) {
+    return errors.New("out of bounds")
+  }
+  g[row][column] = digit
+  return nil
+}
+
+func inBounds(row, column int) bool {
+  if row < 0 || row >= rows {
+    return false
+  }
+  if column < 0 || column >= columns {
+    return false
+  }
+  return true
+}
+
+func main() {
+  var g Grid
+  err := g.Set(10, 0, 5)
+  if err != nil {
+    fmt.Printf("An error occurred: %v.\n", err)
+    os.Exit(1)
+  }
+}
+```
+
+> 错误信息应具有信息性
+>
+> 可以把错误信息当作用户界面的一部分，无论对最终用户还是开发者
+
+#### 按需返回错误
+
+按照惯例，包含错误信息的变量名应以 Err 开头
+
+```go
+const rows, columns = 9, 9
+
+// Sudoku 数独
+type Grid [rows][columns]int8
+
+var(
+  // ErrBounds 表示数字越界
+  ErrBounds = errors.New("out of bounds")
+  // ErrDigit 表示数字无效
+  ErrDigit = errors.New("invalid digit")
+)
+
+// Set
+func (g *Grid) Set(row, column int, digit int8) error {
+  if !inBounds(row, column) {
+    return ErrBounds
+  }
+  g[row][column] = digit
+  return nil
+}
+
+func inBounds(row, column int) bool {
+  if row < 0 || row >= rows {
+    return false
+  }
+  if column < 0 || column >= columns {
+    return false
+  }
+  return true
+}
+
+func main() {
+  var g Grid
+  err := g.Set(10, 0, 5)
+  if err != nil {
+    switch err {
+    case ErrBounds, ErrDigit:
+      fmt.Println("error!!!")
+    default:
+      fmt.Println("unknown error")
+    }
+    os.Exit(1)
+  }
+}
+```
+
+> errors.New 这个构造函数是使用指针实现的，所以上例 switch 语句比较的是内存地址，而不是错误包含的文字信息
+
+#### 自定义错误类型
+
+error 类型是一个内置的接口：任何类型只要实现了返回 string 的 Error() 方法就满足了该接口
+
+可以创建新的错误类型
+
+```go
+const rows, columns = 9, 9
+
+// Sudoku 数独
+type Grid [rows][columns]int8
+
+var (
+	// ErrBounds 表示数字越界
+	ErrBounds = errors.New("out of bounds")
+	// ErrDigit 表示数字无效
+	ErrDigit = errors.New("invalid digit")
+)
+
+type SudokuError []error
+
+func (se SudokuError) Error() string {
+	var s []string
+	for _, e := range se {
+		s = append(s, e.Error())
+	}
+	return strings.Join(s, ", ")
+}
+
+// Set
+func (g *Grid) Set(row, column int, digit int8) error {
+	var errs SudokuError
+	if !inBounds(row, column) {
+		errs = append(errs, ErrBounds)
+	}
+	if !validDigit(digit) {
+		errs = append(errs, ErrDigit)
+	}
+
+	if len(errs) > 0 {
+		return errs
+	}
+
+	g[row][column] = digit
+	return nil
+}
+
+func inBounds(row, column int) bool {
+	if row < 0 || row >= rows {
+		return false
+	}
+	if column < 0 || column >= columns {
+		return false
+	}
+	return true
+}
+
+func validDigit(digit int8) bool {
+	return digit >= 1 && digit <= 9
+}
+
+func main() {
+	var g Grid
+	err := g.Set(10, 0, 10)
+	if err != nil {
+		switch err {
+		case ErrBounds, ErrDigit:
+			fmt.Println("error!!!")
+		default:
+			fmt.Println("unknown error：", err)
+		}
+		os.Exit(1)
+	}
+}
+```
+> 按照惯例，自定义错误类型的名字应以 Error 结尾
+> 有时候名字就是 Error，例如 url.Error
+
+#### 类型断言
+
+上例中，可以使用类型断言来访问每一种错误
+
+使用类型断言，可以把接口类型转化成底层的具体类型，例如 `err.(SudokuError)`
+
+```go
+const rows, columns = 9, 9
+
+// Sudoku 数独
+type Grid [rows][columns]int8
+
+var (
+	// ErrBounds 表示数字越界
+	ErrBounds = errors.New("out of bounds")
+	// ErrDigit 表示数字无效
+	ErrDigit = errors.New("invalid digit")
+)
+
+type SudokuError []error
+
+func (se SudokuError) Error() string {
+	var s []string
+	for _, e := range se {
+		s = append(s, e.Error())
+	}
+	return strings.Join(s, ", ")
+}
+
+// Set
+func (g *Grid) Set(row, column int, digit int8) error {
+	var errs SudokuError
+	if !inBounds(row, column) {
+		errs = append(errs, ErrBounds)
+	}
+	if !validDigit(digit) {
+		errs = append(errs, ErrDigit)
+	}
+
+	if len(errs) > 0 {
+		return errs
+	}
+
+	g[row][column] = digit
+	return nil
+}
+
+func inBounds(row, column int) bool {
+	if row < 0 || row >= rows {
+		return false
+	}
+	if column < 0 || column >= columns {
+		return false
+	}
+	return true
+}
+
+func validDigit(digit int8) bool {
+	return digit >= 1 && digit <= 9
+}
+
+func main() {
+	var g Grid
+	err := g.Set(10, 0, 10)
+	if err != nil {
+		/* 相较于上例，只变动此处 */
+    if errs, ok := err.(SudokuError); ok {
+      fmt.Printf("%d error(s) occurred:\n", len(errs))
+      for _, e := range errs {
+        fmt.Printf("- %v\n", e)
+      }
+    }
+		os.Exit(1)
+	}
+}
+```
+如果类型满足多个接口，那么类型断言可使它从一个接口类型转化为另一个接口类型
+
+#### 如何 panic
+
+Go 里有一个和其他语言异常类似的机制：panic
+
+实际上，panic 很少出现
+
+创建 panic：调用内置的 panic 函数
+
+```go 
+panic("invalid operation") // panic 的参数可以是任意类型
+```
+
+#### 错误值、panic、os.Exit？
+
+通常，更推荐使用错误值，其次才是 panic
+
+panic 比 os.Exit() 更好：panic 后会执行所有 defer 操作，而 os.Exit() 不会
+
+有时候 Go 程序会 panic 而不是返回错误值
+
+```go
+var zero int
+fmt.Println(1 / zero) // panic: runtime error: integer divide by zero
+```
+
+#### 保持冷静并继续
+
+为了防止 panic 导致程序崩溃，Go 提供了 recover 函数
+
+defer 的动作会在函数返回前执行，即使发生了 panic
+
+但如果 defer 的函数调用了 recover，panic 就会停止，程序将继续运行
+
+```go
+defer func() {
+  if err := recover(); err != nil {
+    log.Printf("run time panic: %v", err) // 2023/09/10 11:23:52 run time panic: I forgot my towel
+  }
+}()
+panic("I forgot my towel")
 ```
