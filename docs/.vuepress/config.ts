@@ -19,7 +19,7 @@ const Navbar = [
 				children: [
 					{
 						text: '小程序',
-						link: '/frontend/framework/we_app',
+						link: '/frontend/framework/we-app',
 					},
 				],
 			},

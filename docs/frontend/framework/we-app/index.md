@@ -8,5 +8,5 @@
 
 [小程序运行机制（冷启动、热启动）](https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/operating-mechanism.html)
 
-[开发准备](./01)
+[开发准备](./01/)
 
