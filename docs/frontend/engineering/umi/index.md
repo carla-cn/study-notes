@@ -148,7 +148,7 @@ html {
 #### 页面跳转
 
 - 项目中有一个可以获取路径的函数，getPath
-  - 页面路径跟组件名称有对应关系，思路是 `getPath(所有页面组件 => 所有页面组件.跳转的页面组件名称)` 即可拿到要跳转的路径
+  - 页面路径跟组件名称有对应关系，思路是 `getPath(所有页面组件 => 所有页面组件.跳转的页面组件名称, {参数1, 参数2, ...})` 即可拿到要跳转的路径
 - umi 提供的跳转的 hook，[useNavigate](https://umijs.org/docs/api/api#usenavigate)
 
 ```ts
@@ -157,7 +157,10 @@ import { useNavigate } from "umi";
 
 const navigate = useNavigate();
 const handleClick = () => {
-  navigate(getPath((component) => component.Step1_2));
+  navigate(
+    getPath((component) => component.Step1_2),
+    { param: "a", query1: "b", query2: "c" }
+  ); // /xxx/step1-2/a?query1=b&query2=c
 };
 ```
 
