@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "antd",
     "Atoi",
     "clong",
     "Fprintln",
@@ -9,6 +10,7 @@
     "strconv",
     "struct",
     "Trunc",
+    "typeof",
     "vuepress"
   ]
 }
