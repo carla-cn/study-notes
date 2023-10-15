@@ -68,6 +68,7 @@ const Navbar = [
 ];
 
 export default defineUserConfig({
+  port: 8081,
   lang: "zh-CN",
   title: "瓢儿白施肥记",
   description: "记录一些学习内容",
