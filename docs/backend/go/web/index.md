@@ -771,4 +771,64 @@ curl -i localhost:8080/json
   - 还可以处理 Range 请求（范围请求），如果只请求了资源的一部分内容，那么 ServeContent 就可以如此响应。而 ServeFile 或 io.Copy 就不行
 - Redirect 函数，告诉客户端重定向到另一个 URL
 
-#### 模板
+### 模板
+
+- Web 模板就是预先设计好的 HTML 页面，它可以被模板引擎反复的使用，来产生 HTML 页面
+- Go 的标准库提供了 text/template 和 html/template 两个模板库
+  - 大多数 Go 的 Web 框架都使用这些库作为默认的模板引擎
+
+**模板与模板引擎**
+
+模板引擎可以合并模板与上下文数据，产生最终的 HTML
+
+**Go 的模板引擎**
+
+- 主要使用的是 text/template，HTML 相关的部分使用了 html/template，是个混合体
+- 模板可以完全无逻辑，但又具有足够的嵌入特性
+- 和大多数模板引擎一样，Go Web 的模板位于无逻辑和嵌入逻辑之间的某个地方
+
+**关于模板**
+
+- 模板必须是可读的文本格式，扩展名任意。对于 Web 应用通常就是 HTML
+  - 里面会内嵌一些命令（叫作 action）
+- text/template 是通用模板引擎，html/template 是 HTML 模板引擎
+- action 位于双层花括号之间：{{.}}
+  - 这里的 . 就是一个 action
+  - 它可以命令模板引擎将其替换成一个值
+
+**使用模板引擎**
+
+1. 解析模板源（可以是字符串或模板文件），从而创建一个解析好的模板的 struct
+2. 执行解析好的模板，并传入 ResponseWriter 和数据
+   - 这会触发模板引擎组合解析好的模板和数据，来产生最终的 HTML，并将它传递给 ResponseWriter
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style></style>
+  </head>
+
+  <body>
+    {{ . }}
+  </body>
+</html>
+```
+
+```go
+func process(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("tmpl.html")
+	t.Execute(w, "Hello World")
+}
+
+
+func main() {
+	server := http.Server{
+		Addr: "localhost:8080",
+	}
+	http.HandleFunc("/process", process)
+	server.ListenAndServe()
+}
+```
