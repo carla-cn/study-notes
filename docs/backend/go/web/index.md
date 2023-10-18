@@ -792,7 +792,7 @@ curl -i localhost:8080/json
 - 模板必须是可读的文本格式，扩展名任意。对于 Web 应用通常就是 HTML
   - 里面会内嵌一些命令（叫作 action）
 - text/template 是通用模板引擎，html/template 是 HTML 模板引擎
-- action 位于双层花括号之间：{{.}}
+- action 位于双层花括号之间：`{{ . }}`
   - 这里的 . 就是一个 action
   - 它可以命令模板引擎将其替换成一个值
 
@@ -832,3 +832,252 @@ func main() {
 	server.ListenAndServe()
 }
 ```
+
+#### 解析模板
+
+- ParseFiles
+- ParseGlob
+- Parse
+
+**ParseFiles**
+
+- 解析模板文件，并创建一个解析好的模板 struct，后续可以被执行
+- ParseFiles 函数是 Template struct 上 ParseFiles 方法的简便调用
+- 调用 ParseFiles 后，会创建一个新的模板，模板名字是文件名
+- New 函数
+- ParseFiles 的参数数量可变，但只返回一个模板
+  - 当解析多个文件时，第一个文件作为返回的模板（名，内容），其余的作为 map，供后续执行使用
+
+```go
+// t, _ := template.ParseFiles("tmpl.html")
+t := template.New("tmpl.html")
+t, _ = t.ParseFiles("tmpl.html")
+```
+
+**ParseGlob**
+
+- 使用模式匹配来解析特定的文件
+
+```go
+t, _ := template.ParseGlob("*.html")
+```
+
+**Parse**
+
+- 可以解析字符串模板，其他方式最终都会调用 Parse
+
+**Lookup**
+
+- 通过模板名来寻找模板，如果没找到就返回 nil
+
+**Must**
+
+- 可以包裹一个函数，返回到一个模板的指针和一个错误
+  - 如果错误不为 nil，那么就 panic
+
+#### 执行模板
+
+- Execute
+  - 参数是 ResponseWriter、数据
+  - 单模板：很适用
+  - 模板集：只用第一个模板
+- ExecuteTemplate
+  - 参数是 ResponseWriter、模板名、数据
+  - 模板集：很适用
+
+```go
+func process(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("t1.html")
+	t.Execute(w, "Hello World")
+
+	ts, _ := template.ParseFiles("t2.html", "t3.html")
+	ts.ExecuteTemplate(w, "t2.html", "Hello World")
+}
+```
+
+#### Action
+
+- Action 就是 Go 模板中嵌入的命令，位于两组花括号之间 \{\{ xxx \}\}
+- . 就是一个 Action，而且是最重要的一个。它代表了传入模板的数据
+- Action 主要可以分为 5 类
+  - 条件类
+  - 迭代/遍历类
+  - 设置类
+  - 包含类
+  - 定义类
+
+**条件 Action**
+
+语法
+
+```go
+{{ if arg }}
+	some content
+{{ end }}
+
+{{ if arg }}
+	some content
+{{ else }}
+	some content
+{{ end }}
+
+{{ if arg }}
+	some content
+{{ else if arg }}
+	some content
+{{ else }}
+	some content
+{{ end }}
+```
+
+demo
+
+```html
+<body>
+  {{ if . }} Number is greater than 5 {{ else }} Number is 5 or less {{ end }}
+</body>
+```
+
+```go
+func main() {
+	http.HandleFunc("/process", process)
+	http.ListenAndServe("localhost:8080", nil)
+}
+
+var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+func process(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("tmpl.html")
+	t.Execute(w, rng.Intn(10) > 5)
+}
+```
+
+**迭代/遍历 Action**
+
+语法
+
+```go
+{{ range array }}
+	some content {{ . }}
+{{ end }}
+```
+
+- 这类 Action 用来遍历数组、slice、map 或 channel 等数据结构
+  - “.” 用来表示每次迭代循环中的元素
+
+```html
+<ul>
+  {{range .}}
+  <li>{{.}}</li>
+  <!-- 回落机制 -->
+  {{ else }}
+  <li>Empty list</li>
+  {{end}}
+</ul>
+```
+
+```go
+func main() {
+	http.HandleFunc("/process", process)
+	http.ListenAndServe("localhost:8080", nil)
+}
+
+func process(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("tmpl.html")
+	daysOfWeek := []string{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"}
+	t.Execute(w, daysOfWeek)
+}
+```
+
+**设置 Action**
+
+语法
+
+```go
+{{ with arg }}
+.
+{{ end }}
+```
+
+- 它允许在指定范围内，让“.”来表示其它指定的值（arg）
+
+demo
+
+```html
+<body>
+  <div>The dot is set to {{ . }}</div>
+  <div>{{ with "world" }} Now the dot is set to {{ . }} {{ end }}</div>
+  <div>The dot is {{ . }} again</div>
+</body>
+
+<!-- 回落机制 -->
+
+<body>
+  <div>The dot is set to {{ . }}</div>
+  <div>
+    {{ with "" }} Now the dot is set to {{ . }} {{ else }} The dot is still {{ .
+    }} {{ end }}
+  </div>
+  <div>The dot is {{ . }} again</div>
+</body>
+```
+
+```go
+func process(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("tmpl.html")
+	t.Execute(w, "hello")
+}
+```
+
+**包含 Action**
+
+语法
+
+```go
+{{ template "name"}}
+
+// 给被包含的模板传递参数
+{{ template "name" arg }}
+```
+
+- 它允许在模板中包含其他的模板
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <style></style>
+  </head>
+
+  <body>
+    <div>this is t1.html</div>
+    <div>This is the value of the dot in t1.html - [{{ . }}]</div>
+    <hr />
+    {{ template "t2.html" . }}
+    <hr />
+    <div>This is t1.html after</div>
+  </body>
+</html>
+```
+
+```html
+<div style="background-color: yellow">
+  This is t2.html <br />
+  This is the value of the dot in t2.html - [{{ . }}]
+</div>
+```
+
+```go
+func process(w http.ResponseWriter, r *http.Request) {
+	t, _ := template.ParseFiles("tmpl.html", "t2.html")
+	t.Execute(w, "hello")
+}
+```
+
+**定义 Action**
+
+define action
+
+#### 函数和管道
