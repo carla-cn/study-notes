@@ -1081,3 +1081,98 @@ func process(w http.ResponseWriter, r *http.Request) {
 define action
 
 #### 函数和管道
+
+**参数**
+
+- 参数就是模板里面用到的值
+- 模板里面的参数可以是任何类型的值
+- 参数可以是变量、方法（返回单个值或返回一个值和一个错误）或函数
+- 参数可以是一个“.”，也就是传入到模板引擎的那个值
+
+**在 Action 中设置变量**
+
+- 可以在 action 中设置变量，变量以 $ 开头：
+  - $variable := value
+- 一个迭代 action 的例子
+
+```go
+{{ range $key, $value := . }}
+{{ $key }}: {{ $value }}
+{{ end }}
+```
+
+**管道**
+
+- 管道是按顺序连接到一起的参数、函数和方法
+  - 和 Unix 的管道类似
+- 例如：`{{ p1 | p2 | p3 }}`
+  - p1、p2、p3 要么是参数，要么是函数
+- 管道允许把参数的输出发给下一个参数，下一个参数由管道（|）分隔开
+
+```html
+<body>
+  <!-- 展示 12.35 -->
+  {{ 12.3456 | printf "%.2f" }}
+  <!-- 等价于 -->
+  {{ printf "%.2f" 12.3456 }}
+</body>
+```
+
+**函数**
+
+- 参数可以是一个函数
+- Go 模板引擎提供了一些基本的内置函数，功能比较有限。例如 fmt.Sprint 的各类变体
+- 开发者可以自定义函数
+  - 可以接收任意数量的输入参数
+  - 返回：
+    - 一个值
+    - 一个值 + 一个错误
+
+**内置函数**
+
+- define\template\block
+- html\js\urlquery。对字符串进行转义，防止安全问题
+  - 如果是 Web 模板，那么不会需要经常使用这些函数
+- index
+- print/printf/println
+- len
+- with
+
+**自定义函数**
+
+`template.Funcs(funcMap FuncMap) *Template`
+
+`type FuncMap map[string]interface{}`
+
+创建自定义函数的步骤：
+
+1. 创建一个 FuncMap 类型的变量
+   - key 是函数名
+   - value 就是函数
+2. 把 FuncMap 附加到模板
+
+```html
+<body>
+  <!-- 自定义函数可以在管道中使用，更强大灵活 -->
+  {{ . | fdate }}
+  <!-- 自定义函数也可以作为正常函数使用 -->
+  {{ fdate . }}
+</body>
+```
+
+```go
+func process(w http.ResponseWriter, r *http.Request) {
+	// 常见用法：
+	// template.New("").Funcs(funcMap).Parse(...)
+	// 调用顺序十分重要
+	funcMap := template.FuncMap{"fdate": formatDate}
+	t:= template.New("index.html").Funcs(funcMap)
+	t.ParseFiles("index.html")
+	t.Execute(w, time.Now())
+}
+
+func formatDate(t time.Time) string {
+	layout := "2006-01-02"
+	return t.Format(layout)
+}
+```
