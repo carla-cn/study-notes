@@ -5,12 +5,15 @@
     "clong",
     "Fprintln",
     "imgs",
+    "logn",
+    "nlogn",
     "Println",
     "Sincos",
     "strconv",
     "struct",
     "Trunc",
     "typeof",
+    "unshift",
     "vuepress"
   ]
 }
