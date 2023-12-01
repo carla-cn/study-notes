@@ -11,6 +11,10 @@ const Navbar = [
           {
             text: "红宝书",
             link: "/frontend/js/red-book"
+          },
+          {
+            text: "ES6",
+            link: "/frontend/js/es6"
           }
         ]
       },
