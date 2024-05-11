@@ -244,6 +244,46 @@ fmt.Printf("%c", 128515) // 😃
 
 任何整数类型都可以使用 %c 打印，但是 rune 意味着该数值表示了一个字符
 
+##### 字符串拼接
+
+```go
+package main
+
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+func main() {
+	userName := "bobby"
+	age := 18
+	address := "北京"
+	mobile := "13512345678"
+	/**
+	* 字符串拼接
+	* - Printf 和 Sprintf 性能最差，但可读性好更常用
+	* - + 连接性能较好，可读性差
+	* - 通过字符串的 builder 进行字符串拼接，性能远高于上述方式
+	 */
+	fmt.Println("用户名：" + userName + "，年龄：" + strconv.Itoa(age) + "，地址：" + address + "，电话：" + mobile)
+	fmt.Printf("用户名：%s，年龄：%d，地址：%s，电话：%s\n", userName, age, address, mobile)
+	s := fmt.Sprintf("用户名：%s，年龄：%d，地址：%s，电话：%s", userName, age, address, mobile)
+	fmt.Println(s)
+	//	通过字符串的 builder 进行字符串拼接
+	var builder strings.Builder
+	builder.WriteString("用户名：")
+	builder.WriteString(userName)
+	builder.WriteString("，年龄：")
+	builder.WriteString(strconv.Itoa(age))
+	builder.WriteString("，地址：")
+	builder.WriteString(address)
+	builder.WriteString("，电话：")
+	builder.WriteString(mobile)
+	fmt.Println(builder.String())
+}
+```
+
 ##### 字符
 
 字符字面值使用 '' 括起来，例如 'A'
@@ -326,22 +366,119 @@ UTF8 是一种有效率的可变长度的编码，每个 code point 可以是 8 
 UTF-8 是万维网的主要字符编码，它是由 Ken Thompson（Go 语言的设计者之一） 于 1992 年发明的
 
 ```go
-question := "¿Cómo estás?"
-fmt.Println(len(question), "bytes") // 15
-fmt.Println(utf8.RuneCountInString(question), "runes") // 12
+package main
 
-c,size := utf8.DecodeRuneInString(question)
-fmt.Printf("First rune: %c %v bytes", c, size) // First rune: ¿ 2 bytes
+import (
+	"fmt"
+	"unicode/utf8"
+)
+
+func main() {
+	/*
+	* 字符字节
+	 */
+	s := "Yes我爱慕课网!"
+	for _, b := range []byte(s) {
+		fmt.Printf("%x ", b)
+	}
+	// 59 65 73 e6 88 91 e7 88 b1 e6 85 95 e8 af be e7 bd 91 21
+	fmt.Println()
+
+	for i, ch := range s { // ch is a rune
+		fmt.Printf("(%d %x) ", i, ch)
+	}
+	// (0 59) (1 65) (2 73) (3 6211) (6 7231) (9 6155) (12 8bfe) (15 7f51) (18 21)
+	fmt.Println()
+
+	/*
+	* byte 数和 rune 数
+	 */
+	fmt.Println("byte 数是", len(s))                    // byte 数是 19
+	fmt.Println("rune 数是", utf8.RuneCountInString(s)) // rune 数是 9
+
+	/**
+	* 打印每个 rune
+	 */
+	bytes := []byte(s)
+	for len(bytes) > 0 {
+		r, size := utf8.DecodeRune(bytes)
+		bytes = bytes[size:]
+		fmt.Printf("%c ", r)
+	}
+	// Y e s 我 爱 慕 课 网 !
+	fmt.Println()
+
+	for i, r := range []rune(s) {
+		fmt.Printf("(%d %c) ", i, r)
+	}
+	// (0 Y) (1 e) (2 s) (3 我) (4 爱) (5 慕) (6 课) (7 网) (8 !)
+	fmt.Println()
+}
 ```
 
-##### range
-
-使用 range 关键字，可以遍历各种集合
+**示例：寻找最长不含有重复字符的子串**
 
 ```go
-question := "¿Cómo estás?"
-for i, c := range question {
-  fmt.Printf("%v %c\n", i, c)
+package main
+
+import "fmt"
+
+func lengthOfNonRepeatingSubStr(s string) int {
+	lastOccurred := make(map[rune]int)
+	start := 0
+	maxLength := 0
+	for i, ch := range []rune(s) {
+		if lastI, ok := lastOccurred[ch]; ok && lastI >= start {
+			start = lastI + 1
+		}
+		if i-start+1 > maxLength {
+			maxLength = i - start + 1
+		}
+		lastOccurred[ch] = i
+	}
+	return maxLength
+}
+
+func main() {
+	fmt.Println(lengthOfNonRepeatingSubStr("一二三一二"))
+}
+```
+
+##### strings
+字符串常见操作：
+- Fields / Split / Join
+- Contains / Index
+- ToLower / ToUpper
+- Trim/TrimLeft / TrimRight
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	name := "imooc体系课-go工程师"
+	//	是否包含
+	fmt.Println(strings.Contains(name, "go")) // true
+	//	出现次数
+	fmt.Println(strings.Count(name, "o")) // 3
+	//	分割字符串
+	fmt.Println(strings.Split(name, "-")) // [imooc体系课 go工程师]
+	//	字符串是否包含前缀/后缀
+	fmt.Println(strings.HasPrefix(name, "imooc")) // true
+	fmt.Println(strings.HasSuffix(name, "工程师"))   // true
+	//	查找字串出现的位置
+	fmt.Println(strings.Index(name, "go")) // 15（字节的位置）
+	//	字串替换
+	fmt.Println(strings.Replace(name, "go", "java", -1)) // imooc体系课-java工程师
+	//	大小写转换
+	fmt.Println(strings.ToUpper("go"))   // GO
+	fmt.Println(strings.ToLower("JAVA")) // java
+	//	去掉特殊字符
+	fmt.Println(strings.Trim("#$hello#go#", "$#")) // hello#go
 }
 ```
 
