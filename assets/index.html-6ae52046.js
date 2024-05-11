@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-11be07e0","path":"/general/algorithm/","title":"","lang":"zh-CN","frontmatter":{"sidebar":false},"headers":[{"level":2,"title":"数据结构与算法","slug":"数据结构与算法","link":"#数据结构与算法","children":[]}],"git":{"updatedTime":1699368149000},"filePathRelative":"general/algorithm/index.md"}');export{e as data};
