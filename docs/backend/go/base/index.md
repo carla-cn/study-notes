@@ -602,7 +602,7 @@ fmt.Println(24000000000000000000000/299792/86400) // 926568346646
 >
 > Go 的编译器是用 Go 编写的，这种无类型的数值字面值就是由 big 包所支持的，这使得可以操作很大的数（超过 18 的 10^18）
 
-### 多语言文本
+### 基本类型转换
 
 #### 类型不能混用
 
@@ -704,9 +704,47 @@ strconv 包中的 Atoi 函数（ASCII to Integer），由于字符串里面可�
 countdown, err := strconv.Atoi("10ds")
 if err != nil {
   // handle error
-  fmt.Println(err.Error())
+  fmt.Println(err.Error()) // strconv.Atoi: parsing "10ds": invalid syntax
 }
-fmt.Println(countdown) // 10
+fmt.Println(countdown) // 0
+```
+
+##### strconv
+
+常用的两个方法：
+- strconv.Atoi
+- strconv.Itoa
+
+将其他基本类型 format 为 string 类型
+
+```go
+iStr := strconv.FormatInt(-42, 16)
+fmt.Printf("%v 是 %[1]T\n", iStr) // -2a 是 string
+
+bStr := strconv.FormatBool(true)
+fmt.Printf("%v 是 %[1]T\n", bStr) // true 是 string
+
+fStr := strconv.FormatFloat(3.1415, 'E', -1, 32)
+fmt.Printf("%v 是 %[1]T\n", fStr) // 3.1415E+00 是 string
+```
+
+将 string 类型 parse 为其他基本类型
+
+```go
+i, err := strconv.ParseInt("-42", 16, 16)
+if err == nil {
+	fmt.Printf("%v 是 %[1]T\n", i) // -66 是 int64
+}
+
+b, err := strconv.ParseBool("true")
+if err == nil {
+	fmt.Printf("%v 是 %[1]T\n", b) // true 是 bool
+}
+
+f, err := strconv.ParseFloat("3.1415", 64)
+if err == nil {
+	fmt.Printf("%v 是 %[1]T\n", f) // 3.1415 是 float64
+}
 ```
 
 ### 函数
