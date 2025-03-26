@@ -3,6 +3,15 @@ import { defineUserConfig, defaultTheme } from "vuepress";
 
 const Navbar = [
   {
+    text: "UI",
+    children: [
+      {
+        text: "PS",
+        link: "/ui/ps",
+      },
+    ],
+  },
+  {
     text: "前端",
     children: [
       {
@@ -10,55 +19,51 @@ const Navbar = [
         children: [
           {
             text: "红宝书",
-            link: "/frontend/js/red-book"
+            link: "/frontend/js/red-book",
           },
-          {
-            text: "ES6",
-            link: "/frontend/js/es6"
-          }
-        ]
+        ],
       },
       {
         text: "框架",
         children: [
           {
             text: "小程序",
-            link: "/frontend/framework/we-app"
-          }
-        ]
+            link: "/frontend/framework/we-app",
+          },
+        ],
       },
       {
         text: "工程化",
         children: [
           {
             text: "umi框架",
-            link: "/frontend/engineering/umi"
-          }
-        ]
+            link: "/frontend/engineering/umi",
+          },
+        ],
       },
       {
         text: "其他",
         children: [
           {
             text: "小工具",
-            link: "/frontend/other/tools"
+            link: "/frontend/other/tools",
           },
           {
             text: "错误收集",
-            link: "/frontend/other/errors"
-          }
-        ]
-      }
-    ]
+            link: "/frontend/other/errors",
+          },
+        ],
+      },
+    ],
   },
   {
     text: "后端",
     children: [
       {
         text: "Go",
-        link: "/backend/go"
-      }
-    ]
+        link: "/backend/go",
+      },
+    ],
   },
   {
     text: "通用",
@@ -69,10 +74,10 @@ const Navbar = [
       // },
       {
         text: "数据结构与算法",
-        link: "/general/algorithm"
-      }
-    ]
-  }
+        link: "/general/algorithm",
+      },
+    ],
+  },
 ];
 
 export default defineUserConfig({
@@ -81,23 +86,23 @@ export default defineUserConfig({
   title: "瓢儿白施肥记",
   description: "记录一些学习内容",
   alias: {
-    "@": path.resolve(__dirname, "../")
+    "@": path.resolve(__dirname, "../"),
   },
   base: "/study-notes/",
   markdown: {
     headers: {
-      level: [2, 3, 4, 5]
-    }
+      level: [2, 3, 4, 5],
+    },
   },
   theme: defaultTheme({
     logo: "/favicon.ico",
-    repo: "https://github.com/carla-cn/study-notes",
+    repo: "https://github.com/carla-cn",
     docsDir: "docs",
     sidebarDepth: 4,
     navbar: Navbar,
     editLink: false,
     contributors: false,
     backToHome: "返回首页",
-    toggleColorMode: ""
-  })
+    toggleColorMode: "",
+  }),
 });
