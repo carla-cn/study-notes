@@ -68,13 +68,13 @@ const Navbar = [
   {
     text: "通用",
     children: [
-      // {
-      //   text: "计算机网络",
-      //   link: "/general/network"
-      // },
       {
         text: "数据结构与算法",
         link: "/general/algorithm",
+      },
+      {
+        text: "工具",
+        link: "/general/tool",
       },
     ],
   },
