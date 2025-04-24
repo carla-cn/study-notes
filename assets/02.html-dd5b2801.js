@@ -1,0 +1,1 @@
+import{_ as r,o as t,c as n,a}from"./app-27e24db2.js";const o={};function s(c,e){return t(),n("div",null,e[0]||(e[0]=[a("h2",{id:"",tabindex:"-1"},[a("a",{class:"header-anchor",href:"#","aria-hidden":"true"},"#")],-1)]))}const d=r(o,[["render",s],["__file","02.html.vue"]]);export{d as default};
