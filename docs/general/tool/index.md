@@ -9,3 +9,5 @@ sidebar: false
 [LaTeX](./latex/index.md)
 
 [Zotero](./zotero/index.md)
+
+[MATLAB](./matlab/index.md)
