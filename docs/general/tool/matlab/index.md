@@ -397,7 +397,7 @@ C2 = sort(A, 2, 'descend')
 
 `sortrows(score) 等价于 sortrows(score, 1:size(score, 2))`
 
-`[sort_score, ind] = sortrows(score, 1)`，其中 ind 表示当前行在原矩阵中的行数，sort_score 与 score(ind, :) 结果相同
+`[sort_score, ind] = sortrows(score, 1)`，其中 ind 表示当前行在原矩阵中的行数，`sort_score` 与 `score(ind, :)` 结果相同
 
 ##### flip / fliplr / flipud
 
@@ -435,4 +435,93 @@ B2 = rot90(A, 2)
 % 下面两个结果等价
 B3 = rot90(A, 3)
 B4 = rot90(A, -1)
+```
+
+### 矩阵运算
+
+#### 调用函数
+
+常见的数学运算函数，如 abs、sin、exp、round 等，都可以直接作用于矩阵，即对矩阵每个元素分别应用这些函数，因此返回的结果也是矩阵
+
+##### sum，求和
+
+- 如果 A 是一个向量，则 sum(A)可以计算 A 中所有元素的和
+- 如果 A 是一个矩阵，则 sum(A, dim)可以计算 A 矩阵沿维度 dim 中所有元素的和
+  - dim = 1（默认值） 表示沿着行方向进行计算，即计算矩阵每一列的和，返回一个行向量
+  - dim = 2 表示沿着列方向进行计算，即计算矩阵每一行的和，返回一个列向量
+  - 计算一个矩阵中所有元素的总和 `sum(sum(A))` or `sum(A(:))`，从 MATLAB2018b 版本开始，可以使用 `sum(A, all)` 来计算所有元素的和
+- 指定如何处理 NaN 值 `sum(A, 'omitnan') % 忽略NaN值`
+
+##### prod，计算乘积
+
+prod 函数的用法和 sum 函数的用法相同，它是用来计算乘积的
+
+```matlab
+v=[2,4,5,1,10]; % 向量
+% 直接求向量中所有元素的乘积
+prod(v)  % 400
+
+% 计算 10 的阶乘
+v = 1:10;
+prod(v)
+% 熟练的话可以直接写成 prod(1:10)
+
+% 下面看矩阵的例子
+A = randi(10, 3, 4)
+prod(A) % 计算每列的乘积
+% 也可以写成 prod(A, 1)
+prod(A, 2) % 计算每行的乘积
+
+v = [2, 4, NaN, 1, 10]; % 有 NaN 值
+prod(v)
+% 如果计算时忽略 NaN 值，可以在最后面加上 omitnan 参数
+prod(v， 'omitnan')
+```
+
+##### cumsu，计算累积和
+
+- 如果 A 是一个向量，则 cumsum(A) 可以计算向量 A 的累积和（累加值）
+  ```matlab
+  A=[1 5 3 4 -5 0 8];
+  cumsum(A) % 1 6 9 13 8 8 16
+  ```
+- 如果 A 是一个矩阵，则 cumsum(A,dim)可以计算 A 沿维度 dim 中所有元素的累积和，具体的使用方法和 sum 函数类似
+
+##### diff，计算差分
+
+![差分](./imgs/差分.jpg "差分")
+
+- 如果 A 是一个向量，diff(A, n) 命令计算向量 A 的 n 阶差分，当 n 等于 1 时，可以直接写成 diff(A)
+- 如果 A 是一个矩阵，dff(A,n,dim)表示沿矩阵 A 的维度 dim 方向上计算差分，
+  - 当 dim=1 时沿着行方向计算，即得到每列的 n 阶差分；类似的，dim=1 时，diff(A,n,1)也可以简写成 diff(A,n)
+  - 当 dim=2 时沿着列方向计算，即得到每行的 n 阶差分
+
+::: warning 注意
+diff 函数不支持使用 'omitnan' 参数来忽略向量或者矩阵中的 NaN 值
+:::
+
+##### mean，计算平均值
+
+使用方法和 sum 函数类似
+
+##### media，计算中位数
+
+![中位数](./imgs/中位数.jpg "中位数")
+
+使用方法和 sum 函数类似
+
+##### mod，计算众数
+
+使用方法和 sum 函数类似
+
+::: warning 注意
+使用 mode 函数计算众数时会自动忽略 NaN 值，不能额外添加 'omitnan' 参数
+:::
+
+mode 函数有两个返回值的例子，如果 A 是一个向量， `[M,F] = mode(A)` 得到的 M 表示向量 A 的众数，F 表示众数 M 在向量 A 中出现的次数
+
+```matlab
+A=[-1 2 0 8 -1 0 2 1 8 0 8];
+[M,F] = mode(A) % M = 0, F = 3
+% 上面这个例子中，有两个众数，分别是0和8，它们出现的次数都是3次，此时MATLAB会返回最小的那个数作为众数
 ```

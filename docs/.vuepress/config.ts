@@ -2,66 +2,75 @@ import { path } from "@vuepress/utils";
 import { defineUserConfig, defaultTheme } from "vuepress";
 
 const Navbar = [
+  // {
+  //   text: "UI",
+  //   children: [
+  //     {
+  //       text: "PS",
+  //       link: "/ui/ps",
+  //     },
+  //   ],
+  // },
+  // {
+  //   text: "前端",
+  //   children: [
+  //     {
+  //       text: "JavaScript",
+  //       children: [
+  //         {
+  //           text: "红宝书",
+  //           link: "/frontend/js/red-book",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       text: "框架",
+  //       children: [
+  //         {
+  //           text: "小程序",
+  //           link: "/frontend/framework/we-app",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       text: "工程化",
+  //       children: [
+  //         {
+  //           text: "umi框架",
+  //           link: "/frontend/engineering/umi",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       text: "其他",
+  //       children: [
+  //         {
+  //           text: "小工具",
+  //           link: "/frontend/other/tools",
+  //         },
+  //         {
+  //           text: "错误收集",
+  //           link: "/frontend/other/errors",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  // {
+  //   text: "后端",
+  //   children: [
+  //     {
+  //       text: "Go",
+  //       link: "/backend/go",
+  //     },
+  //   ],
+  // },
   {
-    text: "UI",
+    text: "数学",
     children: [
       {
-        text: "PS",
-        link: "/ui/ps",
-      },
-    ],
-  },
-  {
-    text: "前端",
-    children: [
-      {
-        text: "JavaScript",
-        children: [
-          {
-            text: "红宝书",
-            link: "/frontend/js/red-book",
-          },
-        ],
-      },
-      {
-        text: "框架",
-        children: [
-          {
-            text: "小程序",
-            link: "/frontend/framework/we-app",
-          },
-        ],
-      },
-      {
-        text: "工程化",
-        children: [
-          {
-            text: "umi框架",
-            link: "/frontend/engineering/umi",
-          },
-        ],
-      },
-      {
-        text: "其他",
-        children: [
-          {
-            text: "小工具",
-            link: "/frontend/other/tools",
-          },
-          {
-            text: "错误收集",
-            link: "/frontend/other/errors",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    text: "后端",
-    children: [
-      {
-        text: "Go",
-        link: "/backend/go",
+        text: "最优化：建模、算法与理论",
+        link: "/math/wzw",
       },
     ],
   },
