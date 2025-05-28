@@ -1,5 +1,6 @@
-import { path } from "@vuepress/utils";
-import { defineUserConfig, defaultTheme } from "vuepress";
+import { viteBundler } from "@vuepress/bundler-vite";
+import { defaultTheme } from "@vuepress/theme-default";
+import { defineUserConfig } from "vuepress";
 
 const Navbar = [
   {
@@ -7,7 +8,7 @@ const Navbar = [
     children: [
       {
         text: "最优化：建模、算法与理论",
-        link: "/math/wzw",
+        link: "/math/wzw/index.md",
       },
     ],
   },
@@ -16,32 +17,30 @@ const Navbar = [
     children: [
       {
         text: "工具",
-        link: "/general/tool",
+        link: "/general/tool/index.md",
       },
       {
         text: "UI",
-        link: "/general/ui",
+        link: "/general/ui/index.md",
       },
       {
         text: "前端",
-        link: "/general/frontend",
+        link: "/general/frontend/index.md",
       },
       {
         text: "后端",
-        link: "/general/backend",
+        link: "/general/backend/index.md",
       },
     ],
   },
 ];
 
 export default defineUserConfig({
+  bundler: viteBundler(),
   port: 8081,
   lang: "zh-CN",
   title: "瓢儿白施肥记",
   description: "记录一些学习内容",
-  alias: {
-    "@": path.resolve(__dirname, "../"),
-  },
   base: "/study-notes/",
   markdown: {
     headers: {
