@@ -2,6 +2,15 @@
 title: 本地配置
 ---
 
+## cmd
+
+可以直接执行 `.bat` 文件
+
+```cmd
+rd /s /q node_modules
+del /f /q package-lock.json
+```
+
 ## NVM-windows
 
 管理 node.js 版本
