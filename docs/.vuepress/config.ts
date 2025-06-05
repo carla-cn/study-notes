@@ -1,6 +1,7 @@
 import { viteBundler } from "@vuepress/bundler-vite";
 import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
+import { markdownMathPlugin } from "@vuepress/plugin-markdown-math";
 
 const Navbar = [
   {
@@ -41,14 +42,20 @@ export default defineUserConfig({
   lang: "zh-CN",
   title: "瓢儿白施肥记",
   description: "记录一些学习内容",
+  head: [["link", { rel: "icon", href: "/study-notes/favicon.ico" }]],
   base: "/study-notes/",
+  plugins: [
+    markdownMathPlugin({
+      type: "mathjax",
+    }),
+  ],
   markdown: {
     headers: {
       level: [2, 3, 4, 5],
     },
   },
   theme: defaultTheme({
-    logo: "/favicon.ico",
+    logo: "/imgs/logo.png",
     repo: "https://github.com/carla-cn",
     docsDir: "docs",
     sidebarDepth: 4,
