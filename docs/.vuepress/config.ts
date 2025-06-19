@@ -11,6 +11,10 @@ const Navbar = [
         text: "最优化：建模、算法与理论",
         link: "/math/wzw/index.md",
       },
+      {
+        text: "英语表达",
+        link: "/math/eg/index.md",
+      },
     ],
   },
   {
