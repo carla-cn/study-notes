@@ -1,0 +1,641 @@
+import{_ as s,c as a,e as p,o as t}from"./app-D9fezM6y.js";const e={};function c(o,n){return t(),a("div",null,n[0]||(n[0]=[p(`<h2 id="基础教程" tabindex="-1"><a class="header-anchor" href="#基础教程"><span>基础教程</span></a></h2><h3 id="overleaf" tabindex="-1"><a class="header-anchor" href="#overleaf"><span>overleaf</span></a></h3><p>提供了一个 30 分钟教程可大致了解语法</p><h3 id="本地环境搭建" tabindex="-1"><a class="header-anchor" href="#本地环境搭建"><span>本地环境搭建</span></a></h3><p>下载 TeX Live</p><p>VS Code 加入插件 LaTeX Workshop，配置如下：</p><div class="language-json line-numbers-mode" data-highlighter="prismjs" data-ext="json"><pre><code class="language-json"><span class="line"><span class="token punctuation">{</span></span>
+<span class="line">  <span class="token comment">// 设置是否自动编译</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.latex.autoBuild.run&quot;</span><span class="token operator">:</span> <span class="token string">&quot;never&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token comment">//右键菜单</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.showContextMenu&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token comment">//从使用的包中自动补全命令和环境</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.intellisense.package.enabled&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token comment">//编译出错时设置是否弹出气泡设置</span></span>
+<span class="line">  <span class="token comment">// &quot;latex-workshop.message.error.show&quot;: false,</span></span>
+<span class="line">  <span class="token comment">// &quot;latex-workshop.message.warning.show&quot;: false,</span></span>
+<span class="line">  <span class="token comment">// 编译工具和命令</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.latex.tools&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;xelatex&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;command&quot;</span><span class="token operator">:</span> <span class="token string">&quot;xelatex&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;args&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span></span>
+<span class="line">        <span class="token string">&quot;-synctex=1&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;-interaction=nonstopmode&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;-file-line-error&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;%DOCFILE%&quot;</span></span>
+<span class="line">      <span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;pdflatex&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;command&quot;</span><span class="token operator">:</span> <span class="token string">&quot;pdflatex&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;args&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span></span>
+<span class="line">        <span class="token string">&quot;-synctex=1&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;-interaction=nonstopmode&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;-file-line-error&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;%DOCFILE%&quot;</span></span>
+<span class="line">      <span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;latexmk&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;command&quot;</span><span class="token operator">:</span> <span class="token string">&quot;latexmk&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;args&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span></span>
+<span class="line">        <span class="token string">&quot;-synctex=1&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;-interaction=nonstopmode&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;-file-line-error&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;-pdf&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;-outdir=%OUTDIR%&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">        <span class="token string">&quot;%DOCFILE%&quot;</span></span>
+<span class="line">      <span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;bibtex&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;command&quot;</span><span class="token operator">:</span> <span class="token string">&quot;bibtex&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;args&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;%DOCFILE%&quot;</span><span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span></span>
+<span class="line">  <span class="token punctuation">]</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token comment">// 用于配置编译链</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.latex.recipes&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;XeLaTeX&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;tools&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;xelatex&quot;</span><span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;PDFLaTeX&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;tools&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;pdflatex&quot;</span><span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;BibTeX&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;tools&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;bibtex&quot;</span><span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;LaTeXmk&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;tools&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;latexmk&quot;</span><span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;xelatex -&gt; bibtex -&gt; xelatex*2&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;tools&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;xelatex&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;bibtex&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;xelatex&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;xelatex&quot;</span><span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token punctuation">{</span></span>
+<span class="line">      <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;pdflatex -&gt; bibtex -&gt; pdflatex*2&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">      <span class="token property">&quot;tools&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;pdflatex&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;bibtex&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;pdflatex&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;pdflatex&quot;</span><span class="token punctuation">]</span></span>
+<span class="line">    <span class="token punctuation">}</span></span>
+<span class="line">  <span class="token punctuation">]</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token comment">//文件清理。此属性必须是字符串数组</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.latex.clean.fileTypes&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span></span>
+<span class="line">    <span class="token string">&quot;*.aux&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.bbl&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.blg&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.idx&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.ind&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.lof&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.lot&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.out&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.toc&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.acn&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.acr&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.alg&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.glg&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.glo&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.gls&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.ist&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.fls&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.log&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">    <span class="token string">&quot;*.fdb_latexmk&quot;</span></span>
+<span class="line">  <span class="token punctuation">]</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token comment">//设置为onFaild 在构建失败后清除辅助文件</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.latex.autoClean.run&quot;</span><span class="token operator">:</span> <span class="token string">&quot;onFailed&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token comment">// 使用上次的recipe编译组合</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.latex.recipe.default&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lastUsed&quot;</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token comment">// 用于反向同步的内部查看器的键绑定。ctrl/cmd +点击(默认)或双击</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.view.pdf.internal.synctex.keybinding&quot;</span><span class="token operator">:</span> <span class="token string">&quot;double-click&quot;</span><span class="token punctuation">,</span></span>
+<span class="line"></span>
+<span class="line">  <span class="token property">&quot;[latex]&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span></span>
+<span class="line">    <span class="token property">&quot;editor.defaultFormatter&quot;</span><span class="token operator">:</span> <span class="token string">&quot;James-Yu.latex-workshop&quot;</span></span>
+<span class="line">  <span class="token punctuation">}</span><span class="token punctuation">,</span></span>
+<span class="line">  <span class="token property">&quot;latex-workshop.formatting.latex&quot;</span><span class="token operator">:</span> <span class="token string">&quot;latexindent&quot;</span></span>
+<span class="line"><span class="token punctuation">}</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"></div></div><p>VS Code 加入插件，LTeX+ – grammar/spell checking using LanguageTool，用来检查语法错误（未加配置，目前不太好用，禁用了）</p><h2 id="实践" tabindex="-1"><a class="header-anchor" href="#实践"><span>实践</span></a></h2><h3 id="视频笔记" tabindex="-1"><a class="header-anchor" href="#视频笔记"><span>视频笔记</span></a></h3><p><a href="https://www.bilibili.com/video/BV15x411j7k6?spm_id_from=333.788.videopod.episodes&amp;vd_source=7a09a41552812deea9905288036d8512" target="_blank" rel="noopener noreferrer">视频地址</a></p><div class="language-latex line-numbers-mode" data-highlighter="prismjs" data-ext="latex"><pre><code class="language-latex"><span class="line"><span class="token comment">% 导言区</span></span>
+<span class="line"><span class="token comment">% 10pt 11pt 12pt</span></span>
+<span class="line"><span class="token comment">% report book letter</span></span>
+<span class="line"><span class="token function selector">\\documentclass</span><span class="token punctuation">[</span>12pt<span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token keyword">article</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% \\documentclass{ctexart} %  ctexrep、ctexbook 和 ctexbeamer</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\usepackage</span><span class="token punctuation">{</span><span class="token keyword">ctex</span><span class="token punctuation">}</span> <span class="token comment">% 显示中文</span></span>
+<span class="line"><span class="token comment">% 下面三个宏包用于显示 \\TeX 标志符号</span></span>
+<span class="line"><span class="token function selector">\\usepackage</span><span class="token punctuation">{</span><span class="token keyword">xltxtra</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\usepackage</span><span class="token punctuation">{</span><span class="token keyword">texnames</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\usepackage</span><span class="token punctuation">{</span><span class="token keyword">mflogo</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 插入图片</span></span>
+<span class="line"><span class="token comment">% 语法：\\includegraphics[options]{文件名}</span></span>
+<span class="line"><span class="token comment">% 格式：EPS，PDF，PNG，JPEG，BMP</span></span>
+<span class="line"><span class="token function selector">\\usepackage</span><span class="token punctuation">{</span><span class="token keyword">graphicx</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\graphicspath</span><span class="token punctuation">{</span><span class="token punctuation">{</span>imgs/<span class="token punctuation">}</span>, <span class="token punctuation">{</span>pics/<span class="token punctuation">}</span><span class="token punctuation">}</span> <span class="token comment">% 指定图片的位置</span></span>
+<span class="line"><span class="token function selector">\\usepackage</span><span class="token punctuation">{</span><span class="token keyword">amsmath</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\usepackage</span><span class="token punctuation">{</span><span class="token keyword">amssymb</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\newcommand</span><span class="token punctuation">{</span><span class="token function selector">\\degree</span><span class="token punctuation">}</span><span class="token punctuation">{</span>^<span class="token function selector">\\circ</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\newcommand</span><span class="token punctuation">{</span><span class="token function selector">\\myfont</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token function selector">\\textit</span><span class="token punctuation">{</span><span class="token function selector">\\textbf</span><span class="token punctuation">{</span><span class="token function selector">\\textsf</span><span class="token punctuation">{</span>我的自定义字体内容 Fancy Text<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 向左的省略号</span></span>
+<span class="line"><span class="token function selector">\\newcommand</span><span class="token punctuation">{</span><span class="token function selector">\\adots</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token function selector">\\mathinner</span><span class="token punctuation">{</span><span class="token function selector">\\mkern</span>2mu<span class="token comment">%</span></span>
+<span class="line">        <span class="token function selector">\\raisebox</span><span class="token punctuation">{</span>0.1em<span class="token punctuation">}</span><span class="token punctuation">{</span>.<span class="token punctuation">}</span><span class="token function selector">\\mkern</span>2mu<span class="token function selector">\\raisebox</span><span class="token punctuation">{</span>0.4em<span class="token punctuation">}</span><span class="token punctuation">{</span>.<span class="token punctuation">}</span><span class="token comment">%</span></span>
+<span class="line">        <span class="token function selector">\\mkern</span>2mu<span class="token function selector">\\raisebox</span><span class="token punctuation">{</span>0.7em<span class="token punctuation">}</span><span class="token punctuation">{</span>.<span class="token punctuation">}</span><span class="token function selector">\\mkern</span>1mu<span class="token punctuation">}</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\title</span><span class="token punctuation">{</span><span class="token function selector">\\heiti</span> LaTeX 入门<span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\author</span><span class="token punctuation">{</span><span class="token function selector">\\kaishu</span> 瓢儿白<span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\date</span><span class="token punctuation">{</span><span class="token function selector">\\today</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 指定参考文献的排版样式</span></span>
+<span class="line"><span class="token function selector">\\bibliographystyle</span><span class="token punctuation">{</span>plain<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 正文区（文稿区）</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">document</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% \\tableofcontents % book 格式中生成目录</span></span>
+<span class="line"><span class="token function selector">\\maketitle</span></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">基础</span><span class="token punctuation">}</span></span>
+<span class="line">texdoc ctex 命令可在 cmd 中查看 ctex 宏包</span>
+<span class="line"></span>
+<span class="line">texdoc lshort-zh 命令可在 cmd 中查看 latex 中文教程</span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">简单公式</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% \\degree</span></span>
+<span class="line">勾股定理符号语言：设直角三角形 <span class="token equation string">$ABC$</span>，其中 <span class="token equation string">$<span class="token equation-command regex">\\angle</span> C = 90<span class="token equation-command regex">\\degree</span>$</span>，则有</span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">equation</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    AB^2 = BC^2 + AC^2</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">equation</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 数学公式</span></span>
+<span class="line"><span class="token equation string">$f(x) = 3x^2 + x - 1$</span></span>
+<span class="line"><span class="token equation string">$$f(x) = 3x^2 + x - 1$$</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">字体</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line">在 LaTeX 中，一个字体有 5 种属性：</span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">itemize</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token function selector">\\item</span> 字体编码</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 正文字体编码：OT1、T1、EU1 等</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 数学字体编码：OML、OMS、OMX 等</span>
+<span class="line">    <span class="token function selector">\\item</span> 字体族</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 罗马字体：笔画起始处有装饰</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 无衬线字体：笔画起始处无装饰</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 打字机字体：每个字符宽度相同，又称等宽字体</span>
+<span class="line">    <span class="token function selector">\\item</span> 字体系列</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 粗细</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 宽度</span>
+<span class="line">    <span class="token function selector">\\item</span> 字体形状</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 直立</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 斜体</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 伪斜体</span>
+<span class="line">          <span class="token function selector">\\subitem</span> 小型大写</span>
+<span class="line">    <span class="token function selector">\\item</span> 字体大小</span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">itemize</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsubsection</span><span class="token punctuation">{</span><span class="token headline class-name">字体族设置（罗马字体、无衬线字体、打字机字体）</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\textrm</span><span class="token punctuation">{</span>Roman Family<span class="token punctuation">}</span> <span class="token function selector">\\textsf</span><span class="token punctuation">{</span>Sans Serif Family<span class="token punctuation">}</span> <span class="token function selector">\\texttt</span><span class="token punctuation">{</span>Typewriter Family<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\rmfamily</span> Roman Family<span class="token punctuation">}</span> <span class="token punctuation">{</span><span class="token function selector">\\sffamily</span> Sans Serif Family<span class="token punctuation">}</span> <span class="token punctuation">{</span><span class="token function selector">\\ttfamily</span> Typewriter Family<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsubsection</span><span class="token punctuation">{</span><span class="token headline class-name">字体系列设置（粗细、宽度）</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\textmd</span><span class="token punctuation">{</span>Medium Series<span class="token punctuation">}</span> <span class="token function selector">\\textbf</span><span class="token punctuation">{</span>Boldface Series<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\mdseries</span> Medium Series<span class="token punctuation">}</span> <span class="token punctuation">{</span><span class="token function selector">\\bfseries</span> Boldface Series<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsubsection</span><span class="token punctuation">{</span><span class="token headline class-name">字体形状设置（直立、斜体、伪斜体、小型大写）</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\textup</span><span class="token punctuation">{</span>Upright Shape<span class="token punctuation">}</span> <span class="token function selector">\\textit</span><span class="token punctuation">{</span>Italic Shape<span class="token punctuation">}</span> <span class="token function selector">\\textsl</span><span class="token punctuation">{</span>Slanted Shape<span class="token punctuation">}</span> <span class="token function selector">\\textsc</span><span class="token punctuation">{</span>Small Caps Shape<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\upshape</span> Upright Shape<span class="token punctuation">}</span> <span class="token punctuation">{</span><span class="token function selector">\\itshape</span> Italic Shape<span class="token punctuation">}</span> <span class="token punctuation">{</span><span class="token function selector">\\slshape</span> Slanted Shape<span class="token punctuation">}</span> <span class="token punctuation">{</span><span class="token function selector">\\scshape</span> Small Caps Shape<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsubsection</span><span class="token punctuation">{</span><span class="token headline class-name">中文字体</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\songti</span> 宋体<span class="token punctuation">}</span> <span class="token function selector">\\quad</span> <span class="token punctuation">{</span><span class="token function selector">\\heiti</span> 黑体<span class="token punctuation">}</span> <span class="token function selector">\\quad</span> <span class="token punctuation">{</span><span class="token function selector">\\fangsong</span> 仿宋<span class="token punctuation">}</span> <span class="token function selector">\\quad</span> <span class="token punctuation">{</span><span class="token function selector">\\kaishu</span> 楷书<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line">中文的<span class="token function selector">\\textbf</span><span class="token punctuation">{</span>粗体<span class="token punctuation">}</span>与<span class="token function selector">\\textit</span><span class="token punctuation">{</span>斜体<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsubsection</span><span class="token punctuation">{</span><span class="token headline class-name">字体大小</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\tiny</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\scriptsize</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\footnotesize</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\small</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\normalsize</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\large</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\Large</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\LARGE</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\huge</span> Hello<span class="token punctuation">}</span><span class="token function selector">\\\\</span></span>
+<span class="line"><span class="token punctuation">{</span><span class="token function selector">\\Huge</span> Hello<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line">中文字号设置命令</span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% -0 表示小初号</span></span>
+<span class="line"><span class="token function selector">\\zihao</span><span class="token punctuation">{</span>-0<span class="token punctuation">}</span> 你好 <span class="token function selector">\\zihao</span><span class="token punctuation">{</span>5<span class="token punctuation">}</span> 你好</span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\myfont</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">特殊字符</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">空白符号</span><span class="token punctuation">}</span></span>
+<span class="line">空行分段，多个空行等同一个</span>
+<span class="line"></span>
+<span class="line">自动缩进，绝对不能使用空格代替</span>
+<span class="line"></span>
+<span class="line">英文中多个空格处理为一个空格，中文中空格将被忽略</span>
+<span class="line"></span>
+<span class="line">汉字与其他字符的间距会自动有 XeLaTeX 处理</span>
+<span class="line"></span>
+<span class="line">禁止使用中文全角空格</span>
+<span class="line"></span>
+<span class="line">1em(当前字体中 M 的宽度)<span class="token function selector">\\quad</span> 的空白</span>
+<span class="line"></span>
+<span class="line">2em<span class="token function selector">\\qquad</span> 的空白</span>
+<span class="line"></span>
+<span class="line">约为 1/6 个 em<span class="token function selector">\\,</span> 的空白，或者使用<span class="token function selector">\\thinspace</span> 产生</span>
+<span class="line"></span>
+<span class="line">0.5 个 em<span class="token function selector">\\enspace</span> 的空白</span>
+<span class="line"></span>
+<span class="line">空格<span class="token function selector">\\ </span> 产生空白</span>
+<span class="line"></span>
+<span class="line">硬空格a~b</span>
+<span class="line"></span>
+<span class="line">产生指定宽度的空白：</span>
+<span class="line"><span class="token comment">% 1pc = 12pt = 4.218mm</span></span>
+<span class="line">a <span class="token function selector">\\kern</span> 1pc b</span>
+<span class="line"></span>
+<span class="line">a<span class="token function selector">\\kern</span> -1em b</span>
+<span class="line"></span>
+<span class="line">a<span class="token function selector">\\hskip</span> 1em b</span>
+<span class="line"></span>
+<span class="line">a<span class="token function selector">\\hspace</span><span class="token punctuation">{</span>35pt<span class="token punctuation">}</span> b</span>
+<span class="line"></span>
+<span class="line">占位宽度 a<span class="token function selector">\\hphantom</span><span class="token punctuation">{</span>xyz<span class="token punctuation">}</span>b</span>
+<span class="line"></span>
+<span class="line">弹性长度 a<span class="token function selector">\\hfill</span> b</span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">\\LaTeX 控制符</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\#</span> <span class="token function selector">\\$</span> \\<span class="token comment">% \\{\\} \\~{} \\_{} \\^{} \\textbackslash \\&amp;</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">排版符号</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\S</span> <span class="token function selector">\\P</span> <span class="token function selector">\\dag</span> <span class="token function selector">\\ddag</span> <span class="token function selector">\\copyright</span> <span class="token function selector">\\pounds</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">\\TeX 标志符号</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\TeX</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token function selector">\\LaTeX</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token function selector">\\LaTeXe</span><span class="token punctuation">{</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% xltxtra 宏包提供</span></span>
+<span class="line"><span class="token function selector">\\XeLaTeX</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% texnames 宏包提供</span></span>
+<span class="line"><span class="token function selector">\\AmSTeX</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token function selector">\\BibTeX</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token function selector">\\LuaTeX</span><span class="token punctuation">{</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% mflogo 宏包提供</span></span>
+<span class="line"><span class="token function selector">\\METAFONT</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token function selector">\\MF</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token function selector">\\MP</span><span class="token punctuation">{</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">引号</span><span class="token punctuation">}</span></span>
+<span class="line">\`&#39;<span class="token function selector">\\quad</span> \`\`&#39;&#39;</span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">连字符</span><span class="token punctuation">}</span></span>
+<span class="line">- -- ---</span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">非英文字符</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\oe</span> <span class="token function selector">\\OE</span> <span class="token function selector">\\ae</span> <span class="token function selector">\\AE</span> <span class="token function selector">\\aa</span> <span class="token function selector">\\AA</span> <span class="token function selector">\\o</span> <span class="token function selector">\\O</span> <span class="token function selector">\\l</span> <span class="token function selector">\\L</span> <span class="token function selector">\\ss</span> <span class="token function selector">\\SS</span> !\` ?\`</span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">重音符号（以 o 为例）</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\\`</span>o <span class="token function selector">\\&#39;</span>o <span class="token function selector">\\^</span>o <span class="token function selector">\\&#39;</span>&#39;o <span class="token function selector">\\~</span>o <span class="token function selector">\\=</span>o <span class="token function selector">\\.</span>o <span class="token function selector">\\u</span><span class="token punctuation">{</span>o<span class="token punctuation">}</span> <span class="token function selector">\\v</span><span class="token punctuation">{</span>o<span class="token punctuation">}</span> <span class="token function selector">\\H</span><span class="token punctuation">{</span>o<span class="token punctuation">}</span> <span class="token function selector">\\r</span><span class="token punctuation">{</span>o<span class="token punctuation">}</span> <span class="token function selector">\\t</span><span class="token punctuation">{</span>o<span class="token punctuation">}</span> <span class="token function selector">\\b</span><span class="token punctuation">{</span>o<span class="token punctuation">}</span> <span class="token function selector">\\c</span><span class="token punctuation">{</span>o<span class="token punctuation">}</span> <span class="token function selector">\\d</span><span class="token punctuation">{</span>o<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">插入图片</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% \\includegraphics{kenan} % Overfull \\hbox (122.24353pt too wide)</span></span>
+<span class="line"><span class="token comment">% \\includegraphics{xiaolan}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\includegraphics</span><span class="token punctuation">[</span>scale = 0.3<span class="token punctuation">]</span><span class="token punctuation">{</span>kenan<span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\includegraphics</span><span class="token punctuation">[</span>width = 2cm<span class="token punctuation">]</span><span class="token punctuation">{</span>kenan<span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\includegraphics</span><span class="token punctuation">[</span>height = 2cm<span class="token punctuation">]</span><span class="token punctuation">{</span>kenan<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\includegraphics</span><span class="token punctuation">[</span>width = 0.1<span class="token function selector">\\textwidth</span><span class="token punctuation">]</span><span class="token punctuation">{</span>kenan<span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\includegraphics</span><span class="token punctuation">[</span>height = 0.1<span class="token function selector">\\textheight</span><span class="token punctuation">]</span><span class="token punctuation">{</span>kenan<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\includegraphics</span><span class="token punctuation">[</span>angle = -45, width = 0.1<span class="token function selector">\\textwidth</span><span class="token punctuation">]</span><span class="token punctuation">{</span>kenan<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">表格</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 以下宏包有更多的表格</span></span>
+<span class="line">texdoc booktab</span>
+<span class="line"></span>
+<span class="line">texdoc longtab</span>
+<span class="line"></span>
+<span class="line">texdoc tabu</span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">tabular</span><span class="token punctuation">}</span><span class="token punctuation">{</span>l || c | c | c | p<span class="token punctuation">{</span>1.5cm<span class="token punctuation">}</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token function selector">\\hline</span></span>
+<span class="line">    姓名 <span class="token punctuation">&amp;</span> 语文 <span class="token punctuation">&amp;</span> 数学  <span class="token punctuation">&amp;</span> 外语 <span class="token punctuation">&amp;</span> 备注     <span class="token function selector">\\\\</span></span>
+<span class="line">    <span class="token function selector">\\hline</span><span class="token function selector">\\hline</span></span>
+<span class="line">    张三 <span class="token punctuation">&amp;</span> 87 <span class="token punctuation">&amp;</span> 100 <span class="token punctuation">&amp;</span> 93 <span class="token punctuation">&amp;</span> 优秀     <span class="token function selector">\\\\</span></span>
+<span class="line">    <span class="token function selector">\\hline</span></span>
+<span class="line">    李四 <span class="token punctuation">&amp;</span> 75 <span class="token punctuation">&amp;</span> 64  <span class="token punctuation">&amp;</span> 52 <span class="token punctuation">&amp;</span> 补考另行通知 <span class="token function selector">\\\\</span></span>
+<span class="line">    <span class="token function selector">\\hline</span></span>
+<span class="line">    王二 <span class="token punctuation">&amp;</span> 80 <span class="token punctuation">&amp;</span> 82  <span class="token punctuation">&amp;</span> 78          <span class="token function selector">\\\\</span></span>
+<span class="line">    <span class="token function selector">\\hline</span></span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">tabular</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">浮动体环境</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line">标题控制（caption、bicaption 等宏包）</span>
+<span class="line"></span>
+<span class="line">并排与子图表（subcaption、subfig、floatrow 等宏包）</span>
+<span class="line"></span>
+<span class="line">绕排（picinpar、wrapfig 等宏包）</span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">itemize</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token function selector">\\item</span> 实现灵活分页（避免无法分割的内容产生的页面留白）</span>
+<span class="line">    <span class="token function selector">\\item</span> 给图标添加标题</span>
+<span class="line">    <span class="token function selector">\\item</span> 交叉引用</span>
+<span class="line">    <span class="token function selector">\\item</span> 设置允许位置</span>
+<span class="line">          <span class="token function selector">\\subitem</span> h，此处。代码所在上下文位置</span>
+<span class="line">          <span class="token function selector">\\subitem</span> t，页顶。代码所在页面或者之后页面的顶部</span>
+<span class="line">          <span class="token function selector">\\subitem</span> b，页底。代码所在页面或者之后页面的底部</span>
+<span class="line">          <span class="token function selector">\\subitem</span> p，独立一页。浮动页面</span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">itemize</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\LaTeX</span><span class="token punctuation">{</span><span class="token punctuation">}</span>中的插图见图<span class="token function selector">\\ref</span><span class="token punctuation">{</span><span class="token keyword">fig-kenan</span><span class="token punctuation">}</span>：</span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">figure</span><span class="token punctuation">}</span><span class="token punctuation">[</span>htbp<span class="token punctuation">]</span></span>
+<span class="line">    <span class="token function selector">\\centering</span></span>
+<span class="line">    <span class="token function selector">\\includegraphics</span><span class="token punctuation">[</span>scale = 0.3<span class="token punctuation">]</span><span class="token punctuation">{</span>kenan<span class="token punctuation">}</span></span>
+<span class="line">    <span class="token function selector">\\caption</span><span class="token punctuation">{</span>柯南<span class="token punctuation">}</span><span class="token function selector">\\label</span><span class="token punctuation">{</span><span class="token keyword">fig-kenan</span><span class="token punctuation">}</span> <span class="token comment">% label必须和 caption在一行</span></span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">figure</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line">在<span class="token function selector">\\LaTeX</span><span class="token punctuation">{</span><span class="token punctuation">}</span>中的表格<span class="token function selector">\\ref</span><span class="token punctuation">{</span><span class="token keyword">tab-score</span><span class="token punctuation">}</span>：</span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">table</span><span class="token punctuation">}</span><span class="token punctuation">[</span>htbp<span class="token punctuation">]</span></span>
+<span class="line">    <span class="token function selector">\\centering</span></span>
+<span class="line">    <span class="token function selector">\\caption</span><span class="token punctuation">{</span>考试成绩单<span class="token punctuation">}</span><span class="token function selector">\\label</span><span class="token punctuation">{</span><span class="token keyword">tab-score</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">tabular</span><span class="token punctuation">}</span><span class="token punctuation">{</span>l || c | c | c | p<span class="token punctuation">{</span>1.5cm<span class="token punctuation">}</span><span class="token punctuation">}</span></span>
+<span class="line">        <span class="token function selector">\\hline</span></span>
+<span class="line">        姓名 <span class="token punctuation">&amp;</span> 语文 <span class="token punctuation">&amp;</span> 数学  <span class="token punctuation">&amp;</span> 外语 <span class="token punctuation">&amp;</span> 备注     <span class="token function selector">\\\\</span></span>
+<span class="line">        <span class="token function selector">\\hline</span><span class="token function selector">\\hline</span></span>
+<span class="line">        张三 <span class="token punctuation">&amp;</span> 87 <span class="token punctuation">&amp;</span> 100 <span class="token punctuation">&amp;</span> 93 <span class="token punctuation">&amp;</span> 优秀     <span class="token function selector">\\\\</span></span>
+<span class="line">        <span class="token function selector">\\hline</span></span>
+<span class="line">        李四 <span class="token punctuation">&amp;</span> 75 <span class="token punctuation">&amp;</span> 64  <span class="token punctuation">&amp;</span> 52 <span class="token punctuation">&amp;</span> 补考另行通知 <span class="token function selector">\\\\</span></span>
+<span class="line">        <span class="token function selector">\\hline</span></span>
+<span class="line">        王二 <span class="token punctuation">&amp;</span> 80 <span class="token punctuation">&amp;</span> 82  <span class="token punctuation">&amp;</span> 78          <span class="token function selector">\\\\</span></span>
+<span class="line">        <span class="token function selector">\\hline</span></span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">tabular</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">table</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">数学公式</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\LaTeX</span><span class="token punctuation">{</span><span class="token punctuation">}</span> 将文本内容分为文本模式和数学模式</span>
+<span class="line"></span>
+<span class="line">行内公式</span>
+<span class="line"></span>
+<span class="line">交换律 <span class="token equation string">$a+b=b+a$</span> <span class="token equation string">\\(a+b=b+a\\)</span> 如左边</span>
+<span class="line"></span>
+<span class="line">math 环境</span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">math</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    a + b = b + a</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">math</span><span class="token punctuation">}</span> 如左边</span>
+<span class="line"></span>
+<span class="line">行间公式</span>
+<span class="line"></span>
+<span class="line">交换律是 <span class="token equation string">$$ a + b = b + a $$</span> 如上，同理 <span class="token equation string">\\[ a + b = b + a \\]</span> 如上，还有</span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">displaymath</span><span class="token punctuation">}</span></span>
+<span class="line">    a + b = b + a</span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">displaymath</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line">自动编号的公式，见<span class="token function selector">\\ref</span><span class="token punctuation">{</span><span class="token keyword">eq:commutative</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">equation</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    a + b = b + a <span class="token equation-command regex">\\label</span>{eq:commutative}</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">equation</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line">不编号的 equation 环境，见<span class="token function selector">\\ref</span><span class="token punctuation">{</span><span class="token keyword">eq:commutative2</span><span class="token punctuation">}</span>，这个需要 amsmath 宏包</span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">equation*</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    a + b = b + a <span class="token equation-command regex">\\label</span>{eq:commutative2}</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">equation*</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">矩阵</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 需要 amsmath 宏包，需要放在数学模式中</span></span>
+<span class="line"></span>
+<span class="line">\\<span class="token punctuation">[</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">matrix</span><span class="token punctuation">}</span></span>
+<span class="line">        0 <span class="token punctuation">&amp;</span> 1 <span class="token function selector">\\\\</span></span>
+<span class="line">        1 <span class="token punctuation">&amp;</span> 0</span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">matrix</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token comment">% 加小括号</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">pmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">        0 <span class="token punctuation">&amp;</span> 1 <span class="token function selector">\\\\</span></span>
+<span class="line">        1 <span class="token punctuation">&amp;</span> 0</span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">pmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token comment">% 加中括号</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">bmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">        0 <span class="token punctuation">&amp;</span> 1 <span class="token function selector">\\\\</span></span>
+<span class="line">        1 <span class="token punctuation">&amp;</span> 0</span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">bmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token comment">% 加大括号</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">Bmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">        0 <span class="token punctuation">&amp;</span> 1 <span class="token function selector">\\\\</span></span>
+<span class="line">        1 <span class="token punctuation">&amp;</span> 0</span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">Bmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token comment">% 加单竖线</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">vmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">        0 <span class="token punctuation">&amp;</span> 1 <span class="token function selector">\\\\</span></span>
+<span class="line">        1 <span class="token punctuation">&amp;</span> 0</span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">vmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token comment">% 加双竖线</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">Vmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">        0 <span class="token punctuation">&amp;</span> 1 <span class="token function selector">\\\\</span></span>
+<span class="line">        1 <span class="token punctuation">&amp;</span> 0</span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">Vmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">\\<span class="token punctuation">]</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 可以使用上下标</span></span>
+<span class="line"><span class="token equation string">\\[</span>
+<span class="line">    A = <span class="token equation-command regex">\\begin</span>{pmatrix}</span>
+<span class="line">        a_{11}^2 &amp; a_{12}^2 &amp; a_{13}^2 <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        0        &amp; a_{22}^2 &amp; a_{23}^2 <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        0        &amp; 0        &amp; a_{33}^2</span>
+<span class="line">    <span class="token equation-command regex">\\end</span>{pmatrix}</span>
+<span class="line">\\]</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 常用省略号  \\dots、\\vdots、\\ddots</span></span>
+<span class="line"><span class="token equation string">\\[</span>
+<span class="line">    B = <span class="token equation-command regex">\\begin</span>{bmatrix}</span>
+<span class="line">        a_{11} &amp; <span class="token equation-command regex">\\dots</span>  &amp; a_{1n} <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        <span class="token equation-command regex">\\adots</span> &amp; <span class="token equation-command regex">\\ddots</span> &amp; <span class="token equation-command regex">\\vdots</span> <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        0      &amp;        &amp; a_{nn}</span>
+<span class="line">    <span class="token equation-command regex">\\end</span>{bmatrix}_{n <span class="token equation-command regex">\\times</span> n}</span>
+<span class="line">\\]</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 矩阵嵌套 - 分块矩阵，其中 \\text{} 用于在数学模式中临时切换到文本模式</span></span>
+<span class="line"><span class="token equation string">\\[</span>
+<span class="line">    <span class="token equation-command regex">\\begin</span>{pmatrix}</span>
+<span class="line">        <span class="token equation-command regex">\\begin</span>{matrix}</span>
+<span class="line">            1 &amp; 0 <span class="token equation-command regex">\\\\</span></span>
+<span class="line">            0 &amp; 1</span>
+<span class="line">        <span class="token equation-command regex">\\end</span>{matrix}</span>
+<span class="line">         &amp;</span>
+<span class="line">        <span class="token equation-command regex">\\text</span>{<span class="token equation-command regex">\\Large</span> 0} <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        <span class="token equation-command regex">\\text</span>{<span class="token equation-command regex">\\Large</span> 0}</span>
+<span class="line">         &amp;</span>
+<span class="line">        <span class="token equation-command regex">\\begin</span>{matrix}</span>
+<span class="line">            1 &amp; 0  <span class="token equation-command regex">\\\\</span></span>
+<span class="line">            0 &amp; -1</span>
+<span class="line">        <span class="token equation-command regex">\\end</span>{matrix}</span>
+<span class="line">    <span class="token equation-command regex">\\end</span>{pmatrix}</span>
+<span class="line">\\]</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 三角矩阵</span></span>
+<span class="line"><span class="token comment">% \\multicolumn{n}{cols}{text} 用来合并多列</span></span>
+<span class="line"><span class="token comment">% \\raisebox{} 用来调整高度</span></span>
+<span class="line"><span class="token equation string">\\[</span>
+<span class="line">    <span class="token equation-command regex">\\begin</span>{pmatrix}</span>
+<span class="line">        a_{11} &amp; a_{12} &amp; <span class="token equation-command regex">\\cdots</span> &amp; a_{1n} <span class="token equation-command regex">\\\\</span></span>
+<span class="line">               &amp; a_{22} &amp; <span class="token equation-command regex">\\cdots</span> &amp; a_{2n} <span class="token equation-command regex">\\\\</span></span>
+<span class="line">               &amp;        &amp; <span class="token equation-command regex">\\ddots</span> &amp; <span class="token equation-command regex">\\vdots</span> <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        <span class="token equation-command regex">\\multicolumn</span>{2}{c}{<span class="token equation-command regex">\\raisebox</span>{1.3ex}[0pt]{<span class="token equation-command regex">\\Huge</span> 0}}</span>
+<span class="line">               &amp;        &amp; a_{nn}</span>
+<span class="line">    <span class="token equation-command regex">\\end</span>{pmatrix}</span>
+<span class="line">\\]</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 跨列省略号：\\hdotsfor{columns}</span></span>
+<span class="line"><span class="token equation string">\\[</span>
+<span class="line">    <span class="token equation-command regex">\\begin</span>{pmatrix}</span>
+<span class="line">        1 &amp; <span class="token equation-command regex">\\frac</span> 12 &amp; <span class="token equation-command regex">\\dots</span> &amp; <span class="token equation-command regex">\\frac</span> 1n <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        <span class="token equation-command regex">\\hdotsfor</span>{4}                    <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        m &amp; <span class="token equation-command regex">\\frac</span> m2 &amp; <span class="token equation-command regex">\\dots</span> &amp; <span class="token equation-command regex">\\frac</span> mn</span>
+<span class="line">    <span class="token equation-command regex">\\end</span>{pmatrix}</span>
+<span class="line">\\]</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 行内小矩阵</span></span>
+<span class="line">复数 <span class="token equation string">$z = (x, y)$</span> 也可用矩阵 <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">math</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token function selector">\\left</span> ( <span class="token comment">% 需要手动加上左括号</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">smallmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">        x <span class="token punctuation">&amp;</span> -y <span class="token function selector">\\\\</span></span>
+<span class="line">        y <span class="token punctuation">&amp;</span> x</span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">smallmatrix</span><span class="token punctuation">}</span></span>
+<span class="line">    <span class="token function selector">\\right</span> ) <span class="token comment">% 需要手动加上右括号</span></span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">math</span><span class="token punctuation">}</span>来表示</span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% array 环境（类似表格环境 tabular）</span></span>
+<span class="line"><span class="token equation string">\\[</span>
+<span class="line">    <span class="token equation-command regex">\\begin</span>{array}{r|r}</span>
+<span class="line">        <span class="token equation-command regex">\\frac</span> 12 &amp; 0          <span class="token equation-command regex">\\\\</span></span>
+<span class="line">        <span class="token equation-command regex">\\hline</span></span>
+<span class="line">        0        &amp; -<span class="token equation-command regex">\\frac</span> abc <span class="token equation-command regex">\\\\</span></span>
+<span class="line">    <span class="token equation-command regex">\\end</span>{array}</span>
+<span class="line">\\]</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 用 array 环境构造复杂矩阵</span></span>
+<span class="line">\\<span class="token punctuation">[</span></span>
+<span class="line">    <span class="token comment">% @{&lt;内容&gt;}-添加任意内容，不占表项计数</span></span>
+<span class="line">    <span class="token comment">% 此处添加一个负值空白，表示向左移 -5pt 的距离</span></span>
+<span class="line">    <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">array</span><span class="token punctuation">}</span><span class="token punctuation">{</span>c@<span class="token punctuation">{</span><span class="token function selector">\\hspace</span><span class="token punctuation">{</span>-5pt<span class="token punctuation">}</span><span class="token punctuation">}</span>l<span class="token punctuation">}</span></span>
+<span class="line">        <span class="token comment">% 第一行，第一列</span></span>
+<span class="line">        <span class="token function selector">\\left</span>(</span>
+<span class="line">        <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">array</span><span class="token punctuation">}</span><span class="token punctuation">{</span>ccc|ccc<span class="token punctuation">}</span></span>
+<span class="line">                a <span class="token punctuation">&amp;</span> <span class="token function selector">\\cdots</span> <span class="token punctuation">&amp;</span> a      <span class="token punctuation">&amp;</span> b      <span class="token punctuation">&amp;</span> <span class="token function selector">\\cdots</span> <span class="token punctuation">&amp;</span> b      <span class="token function selector">\\\\</span></span>
+<span class="line">                  <span class="token punctuation">&amp;</span> <span class="token function selector">\\ddots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\\vdots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\\vdots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\\adots</span>          <span class="token function selector">\\\\</span></span>
+<span class="line">                  <span class="token punctuation">&amp;</span> <span class="token function selector">\\ddots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\\vdots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\\vdots</span> <span class="token punctuation">&amp;</span> <span class="token function selector">\\adots</span>          <span class="token function selector">\\\\</span></span>
+<span class="line">                  <span class="token punctuation">&amp;</span>        <span class="token punctuation">&amp;</span> a      <span class="token punctuation">&amp;</span> b                        <span class="token function selector">\\\\</span> <span class="token function selector">\\hline</span></span>
+<span class="line">                  <span class="token punctuation">&amp;</span>        <span class="token punctuation">&amp;</span>        <span class="token punctuation">&amp;</span> c      <span class="token punctuation">&amp;</span> <span class="token function selector">\\cdots</span> <span class="token punctuation">&amp;</span> c      <span class="token function selector">\\\\</span></span>
+<span class="line">                  <span class="token punctuation">&amp;</span>        <span class="token punctuation">&amp;</span>        <span class="token punctuation">&amp;</span> <span class="token function selector">\\vdots</span> <span class="token punctuation">&amp;</span>        <span class="token punctuation">&amp;</span> <span class="token function selector">\\vdots</span> <span class="token function selector">\\\\</span></span>
+<span class="line">                <span class="token function selector">\\multicolumn</span><span class="token punctuation">{</span>3<span class="token punctuation">}</span><span class="token punctuation">{</span>c|<span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token function selector">\\raisebox</span><span class="token punctuation">{</span>2ex<span class="token punctuation">}</span><span class="token punctuation">[</span>0pt<span class="token punctuation">]</span><span class="token punctuation">{</span><span class="token function selector">\\Huge</span> 0<span class="token punctuation">}</span><span class="token punctuation">}</span></span>
+<span class="line">                  <span class="token punctuation">&amp;</span> c      <span class="token punctuation">&amp;</span> <span class="token function selector">\\cdots</span> <span class="token punctuation">&amp;</span> c</span>
+<span class="line">            <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">array</span><span class="token punctuation">}</span></span>
+<span class="line">        <span class="token function selector">\\right</span>)                                  <span class="token punctuation">&amp;</span></span>
+<span class="line">        <span class="token comment">% 第一行，第二列</span></span>
+<span class="line">        <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">array</span><span class="token punctuation">}</span><span class="token punctuation">{</span>l<span class="token punctuation">}</span></span>
+<span class="line">            <span class="token comment">% \\left.仅表示与\\right\\}配对，什么都不输出</span></span>
+<span class="line">            <span class="token function selector">\\left</span>.<span class="token function selector">\\rule</span><span class="token punctuation">{</span>0mm<span class="token punctuation">}</span><span class="token punctuation">{</span>7mm<span class="token punctuation">}</span><span class="token function selector">\\right</span><span class="token function selector">\\}</span>p <span class="token function selector">\\\\</span></span>
+<span class="line">            <span class="token function selector">\\\\</span></span>
+<span class="line">            <span class="token function selector">\\left</span>.<span class="token function selector">\\rule</span><span class="token punctuation">{</span>0mm<span class="token punctuation">}</span><span class="token punctuation">{</span>7mm<span class="token punctuation">}</span><span class="token function selector">\\right</span><span class="token function selector">\\}</span>q</span>
+<span class="line">        <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">array</span><span class="token punctuation">}</span></span>
+<span class="line">        <span class="token function selector">\\\\</span><span class="token punctuation">[</span>-5pt<span class="token punctuation">]</span></span>
+<span class="line">        <span class="token comment">% 第二行第一列</span></span>
+<span class="line">        <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">array</span><span class="token punctuation">}</span><span class="token punctuation">{</span>cc<span class="token punctuation">}</span></span>
+<span class="line">            <span class="token function selector">\\underbrace</span><span class="token punctuation">{</span><span class="token function selector">\\rule</span><span class="token punctuation">{</span>17mm<span class="token punctuation">}</span><span class="token punctuation">{</span>0mm<span class="token punctuation">}</span><span class="token punctuation">}</span>_m <span class="token punctuation">&amp;</span></span>
+<span class="line">            <span class="token function selector">\\underbrace</span><span class="token punctuation">{</span><span class="token function selector">\\rule</span><span class="token punctuation">{</span>17mm<span class="token punctuation">}</span><span class="token punctuation">{</span>0mm<span class="token punctuation">}</span><span class="token punctuation">}</span>_m</span>
+<span class="line">        <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">array</span><span class="token punctuation">}</span> <span class="token punctuation">&amp;</span>    <span class="token comment">% 第二行第二列</span></span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">array</span><span class="token punctuation">}</span></span>
+<span class="line">\\<span class="token punctuation">]</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">数学公式的多行公式</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 涉及 amsmath 和 amssymb 宏包</span></span>
+<span class="line"><span class="token comment">% 带编号</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">gather</span><span class="token punctuation">}</span></span>
+<span class="line">    a + b = b + a <span class="token function selector">\\\\</span> <span class="token comment">% 使用 \\\\ 换行</span></span>
+<span class="line">    ab ba</span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">gather</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 不带编号</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">gather*</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    3 + 5 = 5 + 3 = 8 <span class="token equation-command regex">\\\\</span></span>
+<span class="line">    3 <span class="token equation-command regex">\\times</span> 5 = 5 <span class="token equation-command regex">\\times</span> 3</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">gather*</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 在 \\\\ 使用 \\notag 阻止编号</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">gather</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    3^2 + 4^2 = 5^2 <span class="token equation-command regex">\\notag</span> <span class="token equation-command regex">\\\\</span></span>
+<span class="line">    5^2 + 12^2 = 13^2 <span class="token equation-command regex">\\notag</span> <span class="token equation-command regex">\\\\</span></span>
+<span class="line">    a^2 + b^2 = c^2</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">gather</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% align 和 align* 环境（用 &amp; 进行对齐）</span></span>
+<span class="line"><span class="token comment">% 带编号</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">align</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    x &amp; = t + <span class="token equation-command regex">\\cos</span> t + 1 <span class="token equation-command regex">\\\\</span></span>
+<span class="line">    y &amp; = 2 <span class="token equation-command regex">\\sin</span> t</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">align</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 不带编号</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">align*</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    x &amp; = t &amp; x &amp; = <span class="token equation-command regex">\\cos</span> t      &amp; x &amp; = t      <span class="token equation-command regex">\\\\</span></span>
+<span class="line">    y &amp; =2t &amp; y &amp; = <span class="token equation-command regex">\\sin</span>(t + 1) &amp; y &amp; = <span class="token equation-command regex">\\sin</span> t</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">align*</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% split 环境，对齐同 align 环境，编号在中间</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">equation</span><span class="token punctuation">}</span><span class="token equation string"></span>
+<span class="line">    <span class="token equation-command regex">\\begin</span>{split}</span>
+<span class="line">        <span class="token equation-command regex">\\cos</span> 2x &amp; = <span class="token equation-command regex">\\cos</span>^2 x - <span class="token equation-command regex">\\sin</span>^2 x <span class="token equation-command regex">\\\\</span></span>
+<span class="line">                &amp; = 2 <span class="token equation-command regex">\\cos</span>^2 x - 1</span>
+<span class="line">    <span class="token equation-command regex">\\end</span>{split}</span>
+<span class="line"></span><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">equation</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% cases 环境</span></span>
+<span class="line"><span class="token comment">% 每行公式中用 &amp; 分隔为两部分</span></span>
+<span class="line"><span class="token comment">% 通常表示值和后面的条件</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">equation</span><span class="token punctuation">}</span></span>
+<span class="line">    D(x) = <span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">cases</span><span class="token punctuation">}</span></span>
+<span class="line">        1, <span class="token punctuation">&amp;</span> <span class="token function selector">\\text</span><span class="token punctuation">{</span>如果 <span class="token punctuation">}</span> x <span class="token function selector">\\in</span> <span class="token function selector">\\mathbb</span><span class="token punctuation">{</span>Q<span class="token punctuation">}</span>; <span class="token function selector">\\\\</span></span>
+<span class="line">        0, <span class="token punctuation">&amp;</span> <span class="token function selector">\\text</span><span class="token punctuation">{</span>如果 <span class="token punctuation">}</span> x <span class="token function selector">\\in</span></span>
+<span class="line">        <span class="token function selector">\\mathbb</span><span class="token punctuation">{</span>R<span class="token punctuation">}</span><span class="token function selector">\\setminus</span><span class="token function selector">\\mathbb</span><span class="token punctuation">{</span>Q<span class="token punctuation">}</span> <span class="token comment">% \\mathbb{字母}输出花体，amssymb 支持</span></span>
+<span class="line">    <span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">cases</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">equation</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\section</span><span class="token punctuation">{</span><span class="token headline class-name">参考文献</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token function selector">\\subsection</span><span class="token punctuation">{</span><span class="token headline class-name">参考文献 BibTex</span><span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 一次管理，一次使用</span></span>
+<span class="line"><span class="token comment">% 参考文献格式：</span></span>
+<span class="line"><span class="token comment">% \\begin{thebibliography}{编号样本}</span></span>
+<span class="line"><span class="token comment">%     \\bibitem[记号]{引用标志}文献条目1</span></span>
+<span class="line"><span class="token comment">%     \\bibitem[记号]{引用标志}文献条目2</span></span>
+<span class="line"><span class="token comment">%     ……</span></span>
+<span class="line"><span class="token comment">% \\end{thebibliography}</span></span>
+<span class="line"><span class="token comment">% 其中文献条目包括：作者，题目，出版社，年代，版本，页码等。</span></span>
+<span class="line"><span class="token comment">% 引用时可以采用：\\cite{引用标志1，引用标志2，...}</span></span>
+<span class="line"><span class="token comment">% 引用一篇文章 \\cite{article1}，引用一本书 \\cite{book1}</span></span>
+<span class="line"><span class="token function selector">\\begin</span><span class="token punctuation">{</span><span class="token keyword">thebibliography</span><span class="token punctuation">}</span><span class="token punctuation">{</span>99<span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line">    <span class="token function selector">\\bibitem</span><span class="token punctuation">{</span>article1<span class="token punctuation">}</span></span>
+<span class="line">    陈立辉，苏伟，蔡川，陈晓云.</span>
+<span class="line">    <span class="token function selector">\\emph</span><span class="token punctuation">{</span>基于LaTeX的Web教学公式提取方法研究<span class="token punctuation">}</span><span class="token punctuation">[</span>J<span class="token punctuation">]</span>.</span>
+<span class="line">    计算机科学，2014(06).</span>
+<span class="line"></span>
+<span class="line">    <span class="token function selector">\\bibitem</span><span class="token punctuation">{</span>book1<span class="token punctuation">}</span></span>
+<span class="line">    William H. Press, Saul A. Teukolsky, William T. Vetterling, Brian P. Flannery.</span>
+<span class="line">    <span class="token function selector">\\emph</span><span class="token punctuation">{</span>Numerical Recipes 3rd Edition: The Art of Scientific Computing<span class="token punctuation">}</span>.</span>
+<span class="line">    Cambridge University Press, New York, 2007.</span>
+<span class="line"></span>
+<span class="line">    <span class="token function selector">\\bibitem</span><span class="token punctuation">{</span>latexGuide<span class="token punctuation">}</span></span>
+<span class="line">    Kopka Helmut, W. Daly Patrick.</span>
+<span class="line">    <span class="token function selector">\\emph</span><span class="token punctuation">{</span>Guide to <span class="token function selector">\\LaTeX</span><span class="token punctuation">}</span>, <span class="token equation string">$4^{<span class="token equation-command regex">\\text</span>{th}}$</span> Edition.</span>
+<span class="line">    Available at <span class="token function selector">\\texttt</span><span class="token punctuation">{</span>http://www.amazon.com<span class="token punctuation">}</span>.</span>
+<span class="line"></span>
+<span class="line">    <span class="token function selector">\\bibitem</span><span class="token punctuation">{</span>latexMath<span class="token punctuation">}</span></span>
+<span class="line">    Graetzer George.</span>
+<span class="line">    <span class="token function selector">\\emph</span><span class="token punctuation">{</span>Math Into <span class="token function selector">\\LaTeX</span><span class="token punctuation">}</span>,</span>
+<span class="line">    Birkhäuser Boston; 3rd edition (June 22, 2000).</span>
+<span class="line"></span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">thebibliography</span><span class="token punctuation">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="token comment">% 一次管理，多次使用</span></span>
+<span class="line"><span class="token comment">% 导言区使用 \\bibliographystyle{plain} 指定参考文献样式</span></span>
+<span class="line"><span class="token function selector">\\bibliography</span><span class="token punctuation">{</span>test<span class="token punctuation">}</span></span>
+<span class="line"><span class="token comment">% 有待补充参考文献的使用</span></span>
+<span class="line"><span class="token function selector">\\end</span><span class="token punctuation">{</span><span class="token keyword">document</span><span class="token punctuation">}</span></span>
+<span class="line"></span></code></pre><div class="line-numbers" aria-hidden="true" style="counter-reset:line-number 0;"></div></div>`,12)]))}const i=s(e,[["render",c]]),u=JSON.parse(`{"path":"/general/tool/latex/","title":"LaTeX","lang":"zh-CN","frontmatter":{"title":"LaTeX"},"git":{"updatedTime":1747903235000,"contributors":[{"name":"carla","username":"carla","email":"1309515883@qq.com","commits":2,"url":"https://github.com/carla"}],"changelog":[{"hash":"4e7eb9a69c9f71c85fc64a59091ae0c5f8d058da","time":1747903235000,"email":"1309515883@qq.com","author":"carla","message":"'latex视频笔记'"},{"hash":"7449e5dfd6c0e339ae85229e28ec1408c7f1df86","time":1745120364000,"email":"1309515883@qq.com","author":"carla","message":"LaTeX 入门"}]},"filePathRelative":"general/tool/latex/index.md"}`);export{i as comp,u as data};
