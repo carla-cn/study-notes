@@ -15,6 +15,10 @@ const Navbar = [
         text: "英语表达",
         link: "/math/eg/index.md",
       },
+      {
+        text: "算法",
+        link: "/math/algorithm/index.md",
+      },
     ],
   },
   {
